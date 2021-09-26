@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 export const Navigation = () => {
     return <NavigationContainer>
         <Stack.Navigator>
-            <Stack.Group>
+            <Stack.Group screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Portfolio" component={PortfolioScreen} />
             </Stack.Group>
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
