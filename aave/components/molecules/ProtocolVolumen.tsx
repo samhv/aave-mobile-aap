@@ -4,7 +4,7 @@ import {StyleSheet} from "react-native";
 
 export const ProtocolVolumen = () => {
     // TODO -- volumen of aave
-    const volumen = 19.21;
+    const volumen = "19.21B";
     return <StandardText style={styles.text}>{volumen}</StandardText>;
 };
 

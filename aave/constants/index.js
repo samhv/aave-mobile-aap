@@ -18,7 +18,7 @@ export const STYLES = {
               color: "#30C9E1",
           },
       },
-      screen: {
+      spacing: {
           padding: 15,
       },
       tokenRow: {
