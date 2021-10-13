@@ -10,13 +10,17 @@ export const StandardText: React.FC<TextProps> = ({ style, ...props }) => {
 };
 
 export const SecondaryText: React.FC<TextProps> = ({ style, ...props }) => {
-    return <Text style={StyleSheet.flatten([STYLES.text.secondary, style])} {...props} />
+    return <Text style={StyleSheet.flatten([STYLES.text.standard, STYLES.text.secondary, style])} {...props} />
 };
 
 export const BorrowText: React.FC<TextProps> = ({ style, ...props }) => {
-    return <Text style={StyleSheet.flatten([STYLES.text.borrow, style])} {...props} />
+    return <Text style={StyleSheet.flatten([STYLES.text.standard, STYLES.text.borrow, style])} {...props} />
 };
 
 export const DepositText: React.FC<TextProps> = ({ style, ...props }) => {
-    return <Text style={StyleSheet.flatten([STYLES.text.deposit, style])} {...props} />
+    return <Text style={StyleSheet.flatten([STYLES.text.standard, STYLES.text.deposit, style])} {...props} />
+};
+
+export const HeaderText:  React.FC<TextProps> = ({ style, ...props }) => {
+    return <Text style={StyleSheet.flatten([STYLES.text.standard, STYLES.text.header, style])} {...props} />
 };
