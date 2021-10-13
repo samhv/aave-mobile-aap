@@ -8,7 +8,7 @@ import {STYLES} from "../../constants";
 interface ButtonProps {
     title: string
     onPress: () => void
-    style: any // TODO -- fix it
+    style?: any // TODO -- fix it
 }
 
 export const Button: React.FC<ButtonProps> = ({ style, ...props }) => {

@@ -1,8 +1,12 @@
 import React from 'react';
-import {StandardText} from "../typography";
-import {STYLES} from "../../constants";
-import {View} from "../atoms/View";
+import {Borrow} from "../organisms/Borrow";
+import {TemplateScreen} from "./DepositScreen";
 
 export const BorrowScreen = () => {
-  return <View flex={1} alignItems={"center"} justifyContent={"center"} backgroundColor={STYLES.text.borrow.color}><StandardText>Borrow</StandardText></View>;
+  return (
+      <TemplateScreen
+          title={"Borrow"}
+          body={<Borrow />}
+      />
+  );
 };
