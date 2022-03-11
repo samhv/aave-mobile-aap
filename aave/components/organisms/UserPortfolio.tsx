@@ -10,20 +10,22 @@ export const UserPortfolio = () => {
     // TODO -- get user's tokens
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
-    return <View>
-        <View flexDirection={"row"} justifyContent={"center"}>
-            <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={{ opacity: tabSelected === 0 ? 1 : 0.5 }} />
-            <View width={10} />
-            <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={{ opacity: tabSelected === 1 ? 1 : 0.5 }} />
+    return (
+        <View>
+            <View flexDirection={"row"} justifyContent={"center"}>
+                <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={{ opacity: tabSelected === 0 ? 1 : 0.5 }} />
+                <View width={10} />
+                <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={{ opacity: tabSelected === 1 ? 1 : 0.5 }} />
+            </View>
+            <View height={"100%"}>
+                {
+                    tabSelected === 0
+                        ? <YourAssets />
+                        : <YourLoans />
+                }
+            </View>
         </View>
-        <View height={"100%"}>
-            {
-                tabSelected === 0
-                    ? <YourAssets />
-                    : <YourLoans />
-            }
-        </View>
-    </View>;
+    );
 };
 
 const YourAssets = () => {

@@ -12,7 +12,7 @@ export const ProtocolTokensMarket = () => {
             <StandardText>
                 Markets
             </StandardText>
-                                    <View flex={1} alignItems={"flex-end"}>
+            <View flex={1} alignItems={"flex-end"}>
                                         <View flexDirection={"row"}>
                                             <DepositText>
                                                 Deposit
@@ -27,7 +27,7 @@ export const ProtocolTokensMarket = () => {
                                                 Reward Aave
                                             </SecondaryText>
                                         </View>
-                                    </View>
+            </View>
         </View>
         <TokenRowMarket address={"0x..."} name={"USD Coin"} volumen={"5.57"} borrowAPY={"3.26"} depositAPY={"2.19"} rewardAaveAPY={"0.96"} />
         <TokenRowMarket address={"0x..."} name={"USD Coin"} volumen={"5.57"} borrowAPY={"3.26"} depositAPY={"2.19"} rewardAaveAPY={"0.96"} />
