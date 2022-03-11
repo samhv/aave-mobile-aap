@@ -5,7 +5,12 @@ import {useDispatch} from "react-redux";
 
 export const WalletConnectButton = () => {
     // TODO -- get user's address
-    const address = "0xqkwhdkjqwhdjk11232";
+    const address = "0xsambranoscarluis";
     const dispatch = useDispatch();
-    return <Button title={"Connect Wallet"} onPress={() => dispatch(walletSlice.actions.setAddress(address))} />;
+    return (
+        <Button
+            title={"Connect Wallet"}
+            onPress={() => dispatch(walletSlice.actions.setAddress(address))}
+        />
+    );
 };

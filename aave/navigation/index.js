@@ -16,17 +16,17 @@ export const Navigation = () => {
     return <NavigationContainer>
         <Stack.Navigator>
             {
-                !walletSetup
+                walletSetup
                     ? <>
-                        <Stack.Group screenOptions={{ headerShown: false }}>
-                            <Stack.Screen name="Protocol" component={ProtocolScreen} />
-                        </Stack.Group>
-                    </>
-                    : <>
                         <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
                             <Stack.Screen name="Portfolio" component={PortfolioScreen} />
                             <Stack.Screen name="Deposit" component={DepositScreen} />
                             <Stack.Screen name="Borrow" component={BorrowScreen} />
+                        </Stack.Group>
+                    </>
+                    : <>
+                        <Stack.Group screenOptions={{ headerShown: false }}>
+                            <Stack.Screen name="Protocol" component={ProtocolScreen} />
                         </Stack.Group>
                     </>
             }

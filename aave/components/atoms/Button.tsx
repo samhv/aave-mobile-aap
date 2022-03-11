@@ -17,7 +17,8 @@ export const Button: React.FC<ButtonProps> = ({ style, ...props }) => {
             <View style={StyleSheet.flatten([styles.container, style])}>
                 <StandardText numberOfLines={1}>{props.title}</StandardText>
             </View>
-        </TouchableOpacity>);
+        </TouchableOpacity>
+    );
 };
 
 const styles = StyleSheet.create({
