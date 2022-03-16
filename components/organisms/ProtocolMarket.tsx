@@ -6,6 +6,7 @@ import {TokenIcon} from "../atoms/TokenIcon";
 import {aaveAddress} from "../../constants/tokens";
 
 export const ProtocolTokensMarket = () => {
+    
     // TODO -- render market tokens
     return <View>
         <View flexDirection={"row"} height={40} alignItems={"center"}>
