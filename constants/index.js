@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const STYLES = {
       text: {
           standard: {
@@ -46,4 +48,22 @@ export const STYLES = {
           backgroundColor: "#0B0B0B",
           paddingTop: 25,
       },
+      wrapper: StyleSheet.create({
+          deposit: {
+              backgroundColor: "rgba(48, 201, 225, 0.2)",
+              borderRadius: 6,
+              width: 58,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 3,
+          },
+          borrow: {
+              backgroundColor: "rgba(197, 83, 195, 0.2)",
+              borderRadius: 6,
+              width: 58,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 3,
+          },
+      }),
 };
