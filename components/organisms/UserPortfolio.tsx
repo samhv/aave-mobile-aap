@@ -11,7 +11,7 @@ export const UserPortfolio = () => {
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
     return (
-        <View>
+        <View marginTop={50} backgroundColor={"red"}>
             <View flexDirection={"row"} justifyContent={"center"}>
                 <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={{ opacity: tabSelected === 0 ? 1 : 0.5 }} />
                 <View width={10} />

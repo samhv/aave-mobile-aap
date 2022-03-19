@@ -7,7 +7,7 @@ export const PortfolioIndicator = () => {
     const collateral = "$8,824.21";
     const rate = 2.14;
     const borrowed = "$3,333.21";
-  return <View flexDirection={"row"} paddingVertical={20}>
+  return <View flexDirection={"row"} paddingVertical={20} backgroundColor={"white"}>
       <View flex={1} alignItems={"center"} justifyContent={"center"}>
           <SecondaryText>
               Collateral
