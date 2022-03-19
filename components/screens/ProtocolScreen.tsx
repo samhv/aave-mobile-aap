@@ -9,21 +9,36 @@ import {StandardText} from "../typography";
 import {ProtocolTokensMarket} from "../organisms/ProtocolMarket";
 import {WalletConnectButton} from "../molecules/WalletConnectButton";
 import {GradientBackground} from "../atoms/GradientBackground";
+import { OnboardingDepositButton } from '../molecules/OnboardingDepositButton';
 
 export const ProtocolScreen = () => {
   return (
-      <TemplateScreen
+      <TemplateScreen 
         rightHeaderButton={<WalletConnectButton />}
         header={<>
             <ProtocolVolumen />
             <StandardText>Aave TVL</StandardText>
             </>}
         body={<ProtocolTokensMarket />}
+        actions={
+            <>
+              <OnboardingDepositButton>
+                  
+              </OnboardingDepositButton>
+            </>
+        }
       />
   );
 };
 
-export const TemplateScreen = ({ rightHeaderButton, header, body, actions }) => {
+interface TemplateScreen {
+    rightHeaderButton: React.ReactNode
+    header: React.ReactNode
+    body: React.ReactNode
+    actions: React.ReactNode
+}
+
+export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, header, body, actions }) => {
     return (
       <GradientBackground>
             <ScrollView>
