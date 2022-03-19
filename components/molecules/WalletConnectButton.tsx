@@ -1,16 +1,13 @@
 import React from "react";
 import {Button} from "../atoms/Button";
-import {walletSlice} from "../../redux-store/wallet";
-import {useDispatch} from "react-redux";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 export const WalletConnectButton = () => {
-    // TODO -- get user's address
-    const address = "0xsambranoscarluis";
-    const dispatch = useDispatch();
+    const connectWallet = useConnectWallet();
     return (
         <Button
             title={"Connect Wallet"}
-            onPress={() => dispatch(walletSlice.actions.setAddress(address))}
+            onPress={connectWallet}
         />
     );
 };
