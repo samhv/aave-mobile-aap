@@ -9,21 +9,36 @@ import {StandardText} from "../typography";
 import {ProtocolTokensMarket} from "../organisms/ProtocolMarket";
 import {WalletConnectButton} from "../molecules/WalletConnectButton";
 import {GradientBackground} from "../atoms/GradientBackground";
+import { OnboardingDepositButton } from '../molecules/OnboardingDepositButton';
 
 export const ProtocolScreen = () => {
   return (
-      <TemplateScreen
+      <TemplateScreen 
         rightHeaderButton={<WalletConnectButton />}
         header={<>
             <ProtocolVolumen />
             <StandardText>Aave TVL</StandardText>
             </>}
         body={<ProtocolTokensMarket />}
+        actions={
+            <>
+              <OnboardingDepositButton>
+                  
+              </OnboardingDepositButton>
+            </>
+        }
       />
   );
 };
 
-export const TemplateScreen = ({ rightHeaderButton, header, body, actions }) => {
+interface TemplateScreen {
+    rightHeaderButton: React.ReactNode
+    header: React.ReactNode
+    body: React.ReactNode
+    actions: React.ReactNode
+}
+
+export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, header, body, actions }) => {
     return (
       <GradientBackground>
             <ScrollView>
@@ -36,7 +51,7 @@ export const TemplateScreen = ({ rightHeaderButton, header, body, actions }) => 
                             {header}
                         </View>
                         <View backgroundColor={"#1f141e"} minHeight={"150%"} paddingHorizontal={STYLES.spacing.padding}>
-                        <View padding={STYLES.spacing.padding} marginTop={-40} borderRadius={20} paddingHorizontal={STYLES.spacing.padding} backgroundColor={"#000000"} width={"100%"}>
+                        <View padding={STYLES.spacing.padding} marginTop={-40} borderRadius={20} paddingHorizontal={STYLES.spacing.padding} width={"100%"}>
                             {body}
                             </View>
                         </View>
