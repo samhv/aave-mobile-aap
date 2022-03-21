@@ -44,6 +44,9 @@ export const STYLES = {
               borderColor: "#C553C3",
           },
       },
+      button: {
+          height: 45,
+      },
       screen: {
           backgroundColor: "#0B0B0B",
           paddingTop: 25,
