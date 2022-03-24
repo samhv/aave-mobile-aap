@@ -5,6 +5,7 @@ import {TokenRowYourAssets, TokenRowYourLoans} from "../molecules/TokenRowPortfo
 import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
+import { STYLES } from "../../constants"
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
@@ -14,7 +15,7 @@ export const UserPortfolio = () => {
     return (
         <View>
             <View style={Styles.container}>
-                <View style={Styles.view}>
+                <View style={Styles.tab}>
                         <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={tabSelected === 0 ? Styles.buttonActive : Styles.buttonDeactive} textStyle={tabSelected === 0 ? Styles.buttonTextActive : Styles.buttonTextDeactive}/>
                         <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={tabSelected === 0 ? Styles.buttonDeactive : Styles.buttonActive} textStyle={tabSelected === 0 ? Styles.buttonTextDeactive : Styles.buttonTextActive} />
                 </View>
@@ -68,21 +69,20 @@ const Styles = StyleSheet.create({
     container: {
         flexDirection: "row",
     },
-    view: {
-        backgroundColor: "rgb(15, 15, 15)",
+    tab: {
+        backgroundColor: STYLES.backgrounds.tertiaryBackground,
         flexDirection: "row",
         borderRadius: 35,
         flex: 1,
         padding: 5,        
     },
     buttonActive: {
-        backgroundColor: "rgb(80, 80, 80)", 
-        height: 30, 
+        ...STYLES.secondaryButton, 
         flex: 1,
     },
     buttonDeactive: {
-        backgroundColor: "rgb(15, 15, 15)", 
-        height: 30, 
+        ...STYLES.secondaryButton, 
+        backgroundColor: "transparent", 
         flex: 1,
     },
     buttonTextActive: {
