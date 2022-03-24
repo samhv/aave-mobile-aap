@@ -7,7 +7,7 @@ import Svg, { ClipPath, G, Defs, LinearGradient, Stop, Circle, Polygon } from "r
 
 export const PortfolioIndicator = () => {
     // TODO -- get collateral, borrowed and rate
-    const collateral = "2000";
+    const collateral = "6000";
     const borrowed = "5000";
 
     const sizeCircle = 100;
