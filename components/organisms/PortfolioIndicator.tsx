@@ -1,8 +1,9 @@
 import React from "react";
 import { BigNumber } from "bignumber.js";
-import {View} from "../atoms/View";
-import {BorrowText, DepositText, SecondaryText, StandardText} from "../typography";
+import { View } from "../atoms/View";
+import { BorrowText, DepositText, SecondaryText, StandardText } from "../typography";
 import { StyleSheet } from "react-native";
+import { STYLES } from "../../constants";
 
 export const PortfolioIndicator = () => {
     // TODO -- get collateral, borrowed and rate
@@ -13,15 +14,8 @@ export const PortfolioIndicator = () => {
     const borrowedBN = new BigNumber(borrowed);
     const rate = collateralBN.dividedBy(borrowedBN);
 
-    let rateStyle;
-    if (rate.isGreaterThanOrEqualTo(2)) {
-        rateStyle = styles.goodRate;
-    } else if (rate.isGreaterThanOrEqualTo(1)) {
-        rateStyle = styles.mediumRate;
-    } else {
-        rateStyle = styles.badRate;
-    }
-
+    const rateStyle = getRateStyle(rate);
+    
     return (
         <View flexDirection={"row"} paddingVertical={20}>
             <View flex={1} alignItems={"center"} justifyContent={"center"}>
@@ -49,18 +43,29 @@ export const PortfolioIndicator = () => {
     )
 };
 
+const getRateStyle = (rate: BigNumber) => {
+    if (rate.isGreaterThanOrEqualTo(2)) {
+        return styles.goodRate;
+    } else if (rate.isGreaterThanOrEqualTo(1)) {
+         return  styles.mediumRate;
+    } else {
+         return styles.badRate; 
+    }
+}
+
 const styles = StyleSheet.create({
     goodRate: {
         fontSize: 26,
-        color: "green",
+        color: STYLES.text.success.color,
     },
 
     badRate: {
         fontSize: 26,
-        color: "red",
+        color: STYLES.text.fail.color,
+
     },
     mediumRate: {
-        fontSize: 26,
-        color: "yellow", 
+        fontSize: 26, 
+        color: STYLES.text.warning.color,
     }
 });

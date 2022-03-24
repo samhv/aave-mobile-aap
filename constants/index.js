@@ -20,6 +20,15 @@ export const STYLES = {
           header: {
               fontSize: 22,
           },
+          success: {
+            color: "green",
+          },
+          fail: {
+            color: "red",
+          },
+          warning: {
+            color: "yellow",
+          },
       },
       spacing: {
           padding: 15,
