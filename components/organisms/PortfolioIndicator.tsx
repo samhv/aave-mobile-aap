@@ -3,6 +3,7 @@ import { BigNumber } from "bignumber.js";
 import { View } from "../atoms/View";
 import { BorrowText, DepositText, SecondaryText, StandardText } from "../typography";
 import { StyleSheet } from "react-native";
+import { STYLES } from "../../constants";
 import Svg, { ClipPath, G, Defs, LinearGradient, Stop, Circle, Polygon } from "react-native-svg";
 
 export const PortfolioIndicator = () => {
@@ -37,14 +38,7 @@ export const PortfolioIndicator = () => {
     const xBall = radio + radioCenterBall * Math.cos(angulo) - sizeBall/2 - (strockeWidth/2 * Math.cos(angulo))/2;
     const yBall = radio - radioCenterBall * Math.sin(angulo) - sizeBall/2 + (strockeWidth/2 * Math.sin(angulo))/2;
 
-    let rateStyle;
-    if (rate.isGreaterThanOrEqualTo(2)) {
-        rateStyle = styles.goodRate;
-    } else if (rate.isGreaterThanOrEqualTo(1)) {
-        rateStyle = styles.mediumRate;
-    } else {
-        rateStyle = styles.badRate;
-    }
+    const rateStyle = getRateStyle(rate);
 
     let positionStyleBall;
     if (rate.isLessThanOrEqualTo(4)) {
@@ -78,6 +72,7 @@ export const PortfolioIndicator = () => {
         polygon = <Polygon points={`${radio},-${radio} ${radio},${radio} ${x},${y} 0,0 0,${3*radio} ${3*radio},${3*radio} ${3*radio},0`}/>
     }
  
+
     return (
         <View flexDirection={"row"} paddingVertical={20}>
             <View flex={1} alignItems={"center"} justifyContent={"center"}>
@@ -122,22 +117,31 @@ export const PortfolioIndicator = () => {
     )
 };
 
+const getRateStyle = (rate: BigNumber) => {
+    if (rate.isGreaterThanOrEqualTo(2)) {
+        return styles.goodRate;
+    } else if (rate.isGreaterThanOrEqualTo(1)) {
+         return  styles.mediumRate;
+    } else {
+         return styles.badRate; 
+    }
+}
+
 const styles = StyleSheet.create({
     goodRate: {
-        fontSize: 23,
-        color: "green",
+        fontSize: 26,
+        color: STYLES.text.success.color,
     },
 
     badRate: {
-        fontSize: 23,
-        color: "red",
-    },
+        fontSize: 26,
+        color: STYLES.text.fail.color,
 
+    },
     mediumRate: {
-        fontSize: 23,
-        color: "yellow", 
+        fontSize: 26, 
+        color: STYLES.text.warning.color,
     },
-
     circle: {
         backgroundColor: "rgb(115,115,115)",
         justifyContent: "center",
@@ -150,4 +154,4 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-}); 
+});
