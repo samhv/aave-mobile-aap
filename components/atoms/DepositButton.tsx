@@ -10,10 +10,7 @@ export const DepositButton = () => {
 
 const styles = StyleSheet.create({
     button: {
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
         borderBottomRightRadius: 0,
         borderTopRightRadius: 0,
-        padding: 10,
     }
 })
