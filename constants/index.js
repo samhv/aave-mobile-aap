@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
 
+const COLORS = {
+    primaryBackground: "#0B0B0B",
+    secondaryBackground: "rgb(80, 80, 80)",
+    tertiaryBackground: "rgb(15, 15, 15)",
+}
+
 export const STYLES = {
       text: {
           standard: {
@@ -56,9 +62,18 @@ export const STYLES = {
       button: {
           height: 45,
       },
+      secondaryButton: {
+        backgroundColor: COLORS.secondaryBackground,
+        height: 30, 
+      },
       screen: {
           backgroundColor: "#0B0B0B",
           paddingTop: 25,
+      },
+      backgrounds: {
+          primaryBackground: COLORS.primaryBackground,
+          secondaryBackground: COLORS.secondaryBackground,
+          tertiaryBackground: COLORS.tertiaryBackground,
       },
       wrapper: StyleSheet.create({
           deposit: {
