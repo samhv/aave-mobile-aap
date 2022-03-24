@@ -8,6 +8,7 @@ import { PortfolioIndicator } from "../organisms/PortfolioIndicator";
 import { DepositButton } from "../atoms/DepositButton"
 import { BorrowButton } from "../atoms/BorrowButton";
 import {View} from "../atoms/View";
+import { StyleSheet } from 'react-native';
 
 export const PortfolioScreen = () => {
   return <TemplateScreen
@@ -23,9 +24,9 @@ export const PortfolioScreen = () => {
         actions={
             <>
                 <DepositButton/>
-                <View width={10}/>
                 <BorrowButton/>
             </>
         }
       />
 };
+
