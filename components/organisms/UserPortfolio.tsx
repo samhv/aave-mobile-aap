@@ -4,6 +4,8 @@ import {View} from "../atoms/View";
 import {TokenRowYourAssets, TokenRowYourLoans} from "../molecules/TokenRowPortfolio";
 import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
+import { StyleSheet } from "react-native";
+import { STYLES } from "../../constants"
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
@@ -11,13 +13,12 @@ export const UserPortfolio = () => {
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
     return (
-        <View>
-            <View flexDirection={"row"} justifyContent={"center"}>
-                <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={{ opacity: tabSelected === 0 ? 1 : 0.5 }} />
-                <View width={10} />
-                <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={{ opacity: tabSelected === 1 ? 1 : 0.5 }} />
-            </View>
-            <View height={"100%"}>
+        <View style={styles.container}>
+                <View style={styles.tab}>
+                        <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={tabSelected === 0 ? styles.buttonActive : styles.buttonDeactive} textStyle={tabSelected === 0 ? styles.buttonTextActive : styles.buttonTextDeactive}/>
+                        <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={tabSelected === 0 ? styles.buttonDeactive : styles.buttonActive} textStyle={tabSelected === 0 ? styles.buttonTextDeactive : styles.buttonTextActive} />
+                </View>
+            <View >
                 {
                     tabSelected === 0
                         ? <YourAssets />
@@ -61,3 +62,30 @@ const YourLoans = () => {
         <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
     </>
 };
+
+const styles = StyleSheet.create({
+    container: STYLES.container,
+    tab: {
+        backgroundColor: STYLES.backgrounds.tertiaryBackground,
+        flexDirection: "row",
+        borderRadius: 35,
+        flex: 1,
+        padding: 5,        
+    },
+    buttonActive: {
+        ...STYLES.secondaryButton, 
+        flex: 1,
+    },
+    buttonDeactive: {
+        ...STYLES.secondaryButton, 
+        backgroundColor: "transparent", 
+        flex: 1,
+    },
+    buttonTextActive: {
+        opacity: 1,
+    },
+    buttonTextDeactive: {
+        opacity: 0.5,
+    },
+})
+

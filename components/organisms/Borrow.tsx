@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {View} from "../atoms/View";
 import {TokenRowDeposit} from "../molecules/TokenRowDeposit";
 
-export const Deposit = () => {
+export const Borrow = () => {
     const tokens = [
         {
             id: "1",
