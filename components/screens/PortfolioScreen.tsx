@@ -19,6 +19,7 @@ export const PortfolioScreen = () => {
             </>}
         body={<>
             <PortfolioIndicator />
+            <View height={10}/>
             <UserPortfolio />
             </>}
         actions={
