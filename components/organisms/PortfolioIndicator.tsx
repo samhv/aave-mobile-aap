@@ -146,14 +146,14 @@ const styles = StyleSheet.create({
         color: STYLES.text.warning.color,
     },
     circle: {
-        backgroundColor: "rgb(115,115,115)",
+        backgroundColor: STYLES.backgrounds.secondaryBackground,
         justifyContent: "center",
         alignItems: "center",
     }, 
   
     insideCircle: {
         position: "absolute",
-        backgroundColor: "rgba(0, 0, 0, 1)",
+        backgroundColor: STYLES.backgrounds.primaryBackground,
         justifyContent: "center",
         alignItems: "center",
     },
