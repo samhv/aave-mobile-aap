@@ -4,6 +4,8 @@ import {TokenRowMarket} from "../molecules/TokenRowMarket";
 import {BorrowText, DepositText, SecondaryText, StandardText} from "../typography";
 import {TokenIcon} from "../atoms/TokenIcon";
 import {aaveAddress} from "../../constants/tokens";
+import {StyleSheet} from "react-native";
+import { STYLES } from "../../constants";
 
 export const ProtocolTokensMarket = () => {
     
@@ -19,15 +21,17 @@ export const ProtocolTokensMarket = () => {
                                                 Deposit
                                             </DepositText>
                                             <BorrowText style={{ marginLeft: 10 }}>
-                                                Borrow
+                                                Borrow 
                                             </BorrowText>
                                         </View>
-                                        <View flexDirection={"row"} alignItems={"center"} marginTop={5}>
+                                        <View flexDirection={"row"} alignItems={"center"} marginTop={5}> 
                                             <TokenIcon address={aaveAddress} size={13}/>
                                             <SecondaryText style={{ marginLeft: 5 }}>
                                                 Reward Aave
                                             </SecondaryText>
                                         </View>
+                                        <View style={styles.divider}>
+                                            </View>
             </View>
         </View>
         <TokenRowMarket address={"0x..."} name={"USD Coin"} volumen={"5.57"} borrowAPY={"3.26"} depositAPY={"2.19"} rewardAaveAPY={"0.96"} />
@@ -43,3 +47,11 @@ export const ProtocolTokensMarket = () => {
         <TokenRowMarket address={"0x..."} name={"USD Coin"} volumen={"5.57"} borrowAPY={"3.26"} depositAPY={"2.19"} rewardAaveAPY={"0.96"} />
     </View>;
 };
+const styles = StyleSheet.create({
+    divider: {
+        height: 2,
+        width: "100%",
+        backgroundColor: STYLES.backgrounds.tertiaryBackground,
+        marginTop:6
+    },
+});
