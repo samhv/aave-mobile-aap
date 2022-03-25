@@ -5,6 +5,7 @@ import {BorrowText, DepositText, SecondaryText, StandardText} from "../typograph
 import {TokenIcon} from "../atoms/TokenIcon";
 import {aaveAddress} from "../../constants/tokens";
 import {StyleSheet} from "react-native";
+import { STYLES } from "../../constants";
 
 export const ProtocolTokensMarket = () => {
     
@@ -30,9 +31,6 @@ export const ProtocolTokensMarket = () => {
                                             </SecondaryText>
                                         </View>
                                         <View style={styles.divider}>
-                                                <SecondaryText>
-                                                    
-                                                </SecondaryText>
                                             </View>
             </View>
         </View>
@@ -51,8 +49,8 @@ export const ProtocolTokensMarket = () => {
 };
 const styles = StyleSheet.create({
     divider: {
-        height: 0.5,
-        width: 275,
+        height: 1,
+        width: "100",
         backgroundColor:"grey"
     },
 });
