@@ -53,7 +53,7 @@ export const PortfolioIndicator = () => {
  
 
     return (
-        <View flexDirection={"row"} paddingVertical={20}>
+        <View style={styles.container}>
             <View flex={1} alignItems={"center"} justifyContent={"center"}>
                 <SecondaryText>
                     Collateral
@@ -149,12 +149,16 @@ const styles = StyleSheet.create({
         backgroundColor: STYLES.backgrounds.secondaryBackground,
         justifyContent: "center",
         alignItems: "center",
-    }, 
-  
+    },
     insideCircle: {
         position: "absolute",
         backgroundColor: STYLES.backgrounds.primaryBackground,
         justifyContent: "center",
         alignItems: "center",
     },
+    container: {
+        flexDirection: "row",
+        ...STYLES.container,
+        paddingVertical: STYLES.spacing.padding,
+    }
 });

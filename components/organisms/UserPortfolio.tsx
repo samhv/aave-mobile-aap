@@ -13,13 +13,11 @@ export const UserPortfolio = () => {
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
     return (
-        <View>
-            <View style={Styles.container}>
-                <View style={Styles.tab}>
-                        <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={tabSelected === 0 ? Styles.buttonActive : Styles.buttonDeactive} textStyle={tabSelected === 0 ? Styles.buttonTextActive : Styles.buttonTextDeactive}/>
-                        <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={tabSelected === 0 ? Styles.buttonDeactive : Styles.buttonActive} textStyle={tabSelected === 0 ? Styles.buttonTextDeactive : Styles.buttonTextActive} />
+        <View style={styles.container}>
+                <View style={styles.tab}>
+                        <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={tabSelected === 0 ? styles.buttonActive : styles.buttonDeactive} textStyle={tabSelected === 0 ? styles.buttonTextActive : styles.buttonTextDeactive}/>
+                        <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={tabSelected === 0 ? styles.buttonDeactive : styles.buttonActive} textStyle={tabSelected === 0 ? styles.buttonTextDeactive : styles.buttonTextActive} />
                 </View>
-            </View>
             <View >
                 {
                     tabSelected === 0
@@ -65,10 +63,8 @@ const YourLoans = () => {
     </>
 };
 
-const Styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-    },
+const styles = StyleSheet.create({
+    container: STYLES.container,
     tab: {
         backgroundColor: STYLES.backgrounds.tertiaryBackground,
         flexDirection: "row",
