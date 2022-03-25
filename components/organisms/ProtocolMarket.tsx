@@ -49,8 +49,8 @@ export const ProtocolTokensMarket = () => {
 };
 const styles = StyleSheet.create({
     divider: {
-        height: 1,
-        width: "100",
-        backgroundColor:"grey"
+        height: 2,
+        width: "100%",
+        backgroundColor: STYLES.backgrounds.tertiaryBackground
     },
 });
