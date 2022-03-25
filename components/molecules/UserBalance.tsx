@@ -1,7 +1,6 @@
 import React from "react";
 import {StandardText} from "../typography";
 import {StyleSheet, View} from "react-native";
-import { SecondaryText } from '../typography/index';
 
 
 export const UserBalance = () => {
@@ -17,9 +16,9 @@ export const UserBalance = () => {
 			<StandardText style={styles.integerBalance}>
 				${intergerBalance}
 			</StandardText>
-			<SecondaryText style={styles.decimalBalance}>
+			<StandardText style={styles.decimalBalance}>
 				.{decimalBalance}
-			</SecondaryText>
+			</StandardText>
 		</View>
 	)
 };
@@ -73,5 +72,6 @@ const styles = StyleSheet.create({
     },
     decimalBalance: {
         fontSize:60,
+		opacity: 0.5,
     }
 });
