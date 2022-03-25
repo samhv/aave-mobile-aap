@@ -5,6 +5,7 @@ import {TokenRowYourAssets, TokenRowYourLoans} from "../molecules/TokenRowPortfo
 import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
+import { STYLES } from "../../constants"
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
@@ -12,13 +13,14 @@ export const UserPortfolio = () => {
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
     return (
-        <View style={styles.container}>
-            <View style={styles.sectionText}>
-                <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={{ opacity: tabSelected === 0 ? 1 : 0.5 }} />
-                <View style={styles.buttonSeparation} />
-                <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={{ opacity: tabSelected === 1 ? 1 : 0.5 }} />
+        <View>
+            <View style={Styles.container}>
+                <View style={Styles.tab}>
+                        <Button title={"Your Assets"} onPress={() => setTabSelected(0)} style={tabSelected === 0 ? Styles.buttonActive : Styles.buttonDeactive} textStyle={tabSelected === 0 ? Styles.buttonTextActive : Styles.buttonTextDeactive}/>
+                        <Button title={"Your Loans"} onPress={() => setTabSelected(1)} style={tabSelected === 0 ? Styles.buttonDeactive : Styles.buttonActive} textStyle={tabSelected === 0 ? Styles.buttonTextDeactive : Styles.buttonTextActive} />
+                </View>
             </View>
-            <View style={styles.Tabs}>
+            <View >
                 {
                     tabSelected === 0
                         ? <YourAssets />
@@ -63,26 +65,31 @@ const YourLoans = () => {
     </>
 };
 
-
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
     container: {
-        marginTop: 10,
-        backgroundColor: "#000000",
-        borderRadius: 20,
-        padding: 15,
-    },
-
-    sectionText: {
         flexDirection: "row",
-        justifyContent: "center",
     },
-
-    buttonSeparation: {
-        width: 10,
+    tab: {
+        backgroundColor: STYLES.backgrounds.tertiaryBackground,
+        flexDirection: "row",
+        borderRadius: 35,
+        flex: 1,
+        padding: 5,        
     },
-
-    Tabs: {
-        height: "100%",
+    buttonActive: {
+        ...STYLES.secondaryButton, 
+        flex: 1,
     },
-
+    buttonDeactive: {
+        ...STYLES.secondaryButton, 
+        backgroundColor: "transparent", 
+        flex: 1,
+    },
+    buttonTextActive: {
+        opacity: 1,
+    },
+    buttonTextDeactive: {
+        opacity: 0.5,
+    },
 })
+
