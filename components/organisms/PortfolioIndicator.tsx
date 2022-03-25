@@ -17,7 +17,7 @@ export const PortfolioIndicator = () => {
     const rateStyle = getRateStyle(rate);
     
     return (
-        <View flexDirection={"row"} paddingVertical={20}>
+        <View style={styles.container}>
             <View flex={1} alignItems={"center"} justifyContent={"center"}>
                 <SecondaryText>
                     Collateral
@@ -67,5 +67,10 @@ const styles = StyleSheet.create({
     mediumRate: {
         fontSize: 26, 
         color: STYLES.text.warning.color,
+    },
+    container: {
+        flexDirection: "row",
+        ...STYLES.container,
+        paddingVertical: STYLES.spacing.padding,
     }
 });

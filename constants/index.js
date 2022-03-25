@@ -70,6 +70,11 @@ export const STYLES = {
           backgroundColor: "#0B0B0B",
           paddingTop: 25,
       },
+      container: {
+        backgroundColor: COLORS.primaryBackground,
+        padding: 15,
+        borderRadius: 20
+      },
       backgrounds: {
           primaryBackground: COLORS.primaryBackground,
           secondaryBackground: COLORS.secondaryBackground,
