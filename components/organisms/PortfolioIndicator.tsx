@@ -40,28 +40,7 @@ export const PortfolioIndicator = () => {
 
     const rateStyle = getRateStyle(rate);
 
-    let positionStyleBall;
-    if (rate.isLessThanOrEqualTo(4)) {
-        positionStyleBall = {
-            top: yBall,
-            left: xBall, 
-            height: sizeBall, 
-            width: sizeBall,
-            borderRadius: sizeBall/2,
-            backgroundColor: rateStyle.color,
-            position: "absolute",
-        }
-    } else {
-        positionStyleBall = {
-            top: 0 - strockeWidth/4,
-            left: radio - strockeWidth/2,
-            height: sizeBall, 
-            width: sizeBall,
-            borderRadius: sizeBall/2,
-            backgroundColor: rateStyle.color,
-            position: "absolute",
-        }
-    }
+    const positionStyleBall = getPositionStyleBall(rate, yBall, xBall, sizeBall, rateStyle.color, radio, strockeWidth)
 
     let polygon;
     if (rate.isLessThanOrEqualTo(2)) {
@@ -124,6 +103,30 @@ const getRateStyle = (rate: BigNumber) => {
          return  styles.mediumRate;
     } else {
          return styles.badRate; 
+    }
+}
+
+const getPositionStyleBall = (rate: BigNumber, yBall: number, xBall: number, sizeBall: number, color: string, radio: number, strockeWidth: number) =>{
+    if (rate.isLessThanOrEqualTo(4)) {
+        return {
+            top: yBall,
+            left: xBall, 
+            height: sizeBall, 
+            width: sizeBall,
+            borderRadius: sizeBall/2,
+            backgroundColor: color,
+            position: "absolute",
+        }
+    } else {
+        return {
+            top: 0 - strockeWidth/4,
+            left: radio - strockeWidth/2,
+            height: sizeBall, 
+            width: sizeBall,
+            borderRadius: sizeBall/2,
+            backgroundColor: color,
+            position: "absolute",
+        }
     }
 }
 
