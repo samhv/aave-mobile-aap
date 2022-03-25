@@ -9,7 +9,7 @@ const COLORS = {
 export const STYLES = {
       text: {
           standard: {
-              fontSize: 14,
+              fontSize: 15,
               letterSpacing: -0.5,
               color: "#fff",
           },
