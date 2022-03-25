@@ -8,7 +8,7 @@ import {aaveAddress} from "../../constants/tokens";
 export const ProtocolTokensMarket = () => {
     
     // TODO -- render market tokens
-    return <View>
+    return <View backgroundColor={"#000000"} padding={20} borderRadius={20}>
         <View flexDirection={"row"} height={40} alignItems={"center"}>
             <StandardText>
                 Markets

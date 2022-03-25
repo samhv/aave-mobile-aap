@@ -51,7 +51,7 @@ export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, he
                             {header}
                         </View>
                         <View backgroundColor={"#1f141e"} minHeight={"150%"} paddingHorizontal={STYLES.spacing.padding}>
-                        <View padding={STYLES.spacing.padding} marginTop={-40} borderRadius={20} paddingHorizontal={STYLES.spacing.padding} backgroundColor={"#000000"} width={"100%"}>
+                        <View padding={STYLES.spacing.padding} marginTop={-40} borderRadius={20} paddingHorizontal={STYLES.spacing.padding} width={"100%"}>
                             {body}
                             </View>
                         </View>
