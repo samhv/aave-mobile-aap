@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     divider: {
         height: 2,
         width: "100%",
-        backgroundColor: STYLES.backgrounds.tertiaryBackground
+        backgroundColor: STYLES.backgrounds.tertiaryBackground,
+        marginTop:6
     },
 });
