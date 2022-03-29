@@ -24,35 +24,45 @@ export const TemplateScreen = ({ title, body }) => {
                 <HeaderText style={{ textAlign: "center" }}>
                     {title}
                 </HeaderText>
-                <View style={styles.container}>
-                    <View style={styles.leftHeader}>
-                        <StandardText>
-                           V2 Markets
-                        </StandardText>
+                <View style={styles.generalContainer}>
+                    <View>
+                        <View style={styles.divider} />
+                        <View style={styles.container}>
+                            <View style={styles.backgroundV2}>
+                                <StandardText>
+                                V2 Markets
+                                </StandardText>
+                            </View>
+                            <View width={200}/>
+                            <View style={styles.depositA}>
+                                <View style={styles.containerDeposit}>
+                                    <DepositText>Deposit APY</DepositText>
+                                </View>
+                                <View style={styles.containerAPY}>
+                                    <TokenIcon address={aaveAddress} size={13}/>
+                                    <SecondaryText style={{ marginLeft: 5 }}>
+                                        Reward Aave
+                                    </SecondaryText>
+                                </View>
+                        </View>
                     </View>
-                    <View width={200}/>
-                    <View style={styles.depositA}>
-                        <View style={styles.containerDeposit}>
-                            <DepositText>Deposit APY</DepositText>
-                        </View>
-                        <View style={styles.containerAPY}>
-                            <TokenIcon address={aaveAddress} size={13}/>
-                            <SecondaryText style={{ marginLeft: 5 }}>
-                                Reward Aave
-                            </SecondaryText>
-                        </View>
                     </View>
                 </View>
             </View>
-            { body }
+            <View style={styles.divider} />
+            <View>
+                 { body }
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    generalContainer: {
+        flexDirection: "row",
+    },
     container: {
         flexDirection: "row",
-        paddingTop: 20,
         alignItems: "center",
     },
     containerAPY: {
@@ -69,5 +79,12 @@ const styles = StyleSheet.create({
     },
     depositA: {
         alignItems: "flex-end",
-    }
+    },
+    divider: {
+        height: 2,
+        width: "100%",
+        backgroundColor: STYLES.backgrounds.tertiaryBackground,
+        opacity: 0.9,
+        marginTop:6
+    },
 })

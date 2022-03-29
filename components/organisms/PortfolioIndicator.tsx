@@ -11,9 +11,9 @@ export const PortfolioIndicator = () => {
     const collateral = "6000";
     const borrowed = "5000";
 
-    const sizeCircle = 100;
+    const sizeCircle = 80;
     const radio = sizeCircle/2;
-    const strockeWidth = 20;
+    const strockeWidth = 25;
     const styleCircle = {
         height: sizeCircle,
         width: sizeCircle,
@@ -132,17 +132,17 @@ const getPositionStyleBall = (rate: BigNumber, yBall: number, xBall: number, siz
 
 const styles = StyleSheet.create({
     goodRate: {
-        fontSize: 26,
+        fontSize: 18,
         color: STYLES.text.success.color,
     },
 
     badRate: {
-        fontSize: 26,
+        fontSize: 18,
         color: STYLES.text.fail.color,
 
     },
     mediumRate: {
-        fontSize: 26, 
+        fontSize: 18, 
         color: STYLES.text.warning.color,
     },
     circle: {
