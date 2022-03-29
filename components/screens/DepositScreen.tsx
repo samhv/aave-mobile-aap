@@ -25,7 +25,7 @@ export const TemplateScreen = ({ title, body }) => {
                     {title}
                 </HeaderText>
                 <View style={styles.container}>
-                    <View style={styles.backgroundV2}>
+                    <View style={styles.leftHeader}>
                         <StandardText>
                            V2 Markets
                         </StandardText>
@@ -57,14 +57,15 @@ const styles = StyleSheet.create({
     },
     containerAPY: {
         flexDirection: "row",
+        alignItems: "center",
     },
-    backgroundV2: {
+    leftHeader: {
         backgroundColor: STYLES.backgrounds.secondaryBackground,
         padding: 7,
         borderRadius: 8,
     },
     containerDeposit: {
-        padding: 8,
+        marginBottom: 8,
     },
     depositA: {
         alignItems: "flex-end",
