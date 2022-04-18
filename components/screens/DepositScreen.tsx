@@ -67,14 +67,15 @@ const styles = StyleSheet.create({
     },
     containerAPY: {
         flexDirection: "row",
+        alignItems: "center",
     },
-    backgroundV2: {
+    leftHeader: {
         backgroundColor: STYLES.backgrounds.secondaryBackground,
         padding: 7,
         borderRadius: 8,
     },
     containerDeposit: {
-        padding: 5,
+        marginBottom: 8,
     },
     depositA: {
         alignItems: "flex-end",
