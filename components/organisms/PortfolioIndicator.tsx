@@ -4,10 +4,9 @@ import { View } from "../atoms/View";
 import { BorrowText, DepositText, SecondaryText, StandardText } from "../typography";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants";
-// import Svg, { ClipPath, G, Defs, Circle, Polygon } from "react-native-svg";
+import Svg, { ClipPath, G, Defs, Circle, Polygon } from "react-native-svg";
 
 export const PortfolioIndicator = () => {
-    return null;
     // TODO -- get collateral, borrowed and rate
     const collateral = "6000";
     const borrowed = "5000";

@@ -21,9 +21,7 @@ export const useConnectWallet = () => {
     const address = connector?.accounts?.[0]
 
     useEffect(() => {
-        if (address !== undefined) {
-            dispatch(walletSlice.actions.setAddress(address))
-        }
+        dispatch(walletSlice.actions.setAddress(address))
     }, [address])
 
     return { connectWallet, killSession }
