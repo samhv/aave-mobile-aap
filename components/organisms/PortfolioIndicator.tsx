@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BigNumber } from "bignumber.js";
 import { View } from "../atoms/View";
 import { BorrowText, DepositText, SecondaryText, StandardText } from "../typography";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants";
-import Svg, { ClipPath, G, Defs, LinearGradient, Stop, Circle, Polygon } from "react-native-svg";
+import Svg, { ClipPath, G, Defs, Circle, Polygon } from "react-native-svg";
 
 export const PortfolioIndicator = () => {
     // TODO -- get collateral, borrowed and rate
