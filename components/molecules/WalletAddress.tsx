@@ -4,10 +4,12 @@ import {Button} from "../atoms/Button";
 import {walletSelectors} from "../../redux-store/wallet";
 import { StyleSheet } from "react-native";
 import {STYLES} from "../../constants";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 export const WalletAddress = () => {
+    const { killSession } = useConnectWallet();
     const address = useSelector(walletSelectors.address);
-    return <Button style={styles.button} title={address} onPress={() => {}} />;
+    return <Button style={styles.button} title={address} onPress={killSession} />;
 };
 
 const styles = StyleSheet.create({
