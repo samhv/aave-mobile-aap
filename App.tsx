@@ -1,3 +1,4 @@
+import 'react-native-get-random-values'
 import React from 'react';
 // import { WalletConnectProvider } from "@walletconnect/react-native-dapp/dist/providers";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
