@@ -3,4 +3,3 @@ module.exports = {
       extraNodeModules: require("expo-crypto-polyfills"),
     },
 };
-  
