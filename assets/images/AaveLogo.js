@@ -1,7 +1,9 @@
 import React from "react";
-import { SvgXml } from "react-native-svg";
+// import { SvgXml } from "react-native-svg";
+import { View } from "../../components/atoms/View"
 
 export const AaveLogo = ({ width, height, ...props }) => {
+    return <View />;
     return (
             <SvgXml
                 {...props}
