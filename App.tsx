@@ -1,4 +1,4 @@
-import 'react-native-get-random-values'
+import "./global";
 // import "@ethersproject/shims"
 import React from 'react';
 import WalletConnectProvider from "@walletconnect/react-native-dapp";
