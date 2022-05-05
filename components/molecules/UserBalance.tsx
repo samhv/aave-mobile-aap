@@ -17,19 +17,21 @@ export const UserBalance = () => {
 	const decimalBalance: string = getDecimalBalance(balance);
 
 	useEffect(() => {
-		const fetchBalance = async () => {
-			const balanceUser = await provider.getBalance(addressWallet);
-			const balanceUserBN = new BigNumber(balanceUser._hex)
-			const numberOfDecimals = new BigNumber(10).pow(18)
-			const balanceFormated = balanceUserBN.div(numberOfDecimals).toString(); 
-			setBalance(balanceFormated);
+		if (addressWallet) {
+			const fetchBalance = async () => {
+				const balanceUser = await provider.getBalance(addressWallet);
+				const balanceUserBN = new BigNumber(balanceUser._hex)
+				const numberOfDecimals = new BigNumber(10).pow(18)
+				const balanceFormated = balanceUserBN.div(numberOfDecimals).toString(); 
+				setBalance(balanceFormated);
+			}
+			fetchBalance();
+			const intervalId = setInterval(fetchBalance, 60000);
+			
+			return () => {
+				clearInterval(intervalId)
+			};
 		}
-		fetchBalance();
-		const intervalId = setInterval(fetchBalance, 60000);
-		
-		return () => {
-			clearInterval(intervalId)
-		};
 	}, [addressWallet])
 
 	return (
