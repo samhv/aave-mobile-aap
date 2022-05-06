@@ -3,21 +3,7 @@ import { ethers } from "ethers";
 import React, { useState, useEffect } from "react";
 import { ABI, contractAddress} from "./aave_constants";
 import BigNumber from 'bignumber.js';
-
-const CHAIN_IDS = {
-	"ETHEREUM": 1,
-	"POLYGON": 137,
-}
-
-const BASE_TOKEN_SYMBOL = {
-	[CHAIN_IDS.ETHEREUM]: "ETH",
-	[CHAIN_IDS.POLYGON]: "Matic"
-}
-
-const RPC_URL = {
-	[CHAIN_IDS.ETHEREUM]: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-	[CHAIN_IDS.POLYGON]: "https://polygon-rpc.com",
-}
+import { RPC_URL } from './chains';
 
 const useProtocol = () => {
 	const connector = useWalletConnect()
@@ -34,11 +20,11 @@ const useProtocol = () => {
 }
 
 const userAccountData = () => {
-	const { addressWallet, provider } = useProtocol();
+	const { addressWallet, provider, connector } = useProtocol();
 
 	const [userAccountData, setUserAccountData] = useState({ 
 		totalCollateralBase: new BigNumber("0"),
-		availableBorrowsBase:  new BigNumber("0"),
+		totalDebtBase:  new BigNumber("0"),
 		healthFactor:  new BigNumber("0"), 
 	});
 
@@ -46,14 +32,14 @@ const userAccountData = () => {
 		if (addressWallet) {
 			const fetchUserAccountData = async () => {
 				// create a aave contract ...todo...
-				const aaveAddress = contractAddress;
+				const aaveAddress = contractAddress[connector.chainId];
 				const aaveAbi = ABI;
 				const aaveContract = new ethers.Contract(aaveAddress, aaveAbi, provider);
-				const { totalCollateralBase, availableBorrowsBase, healthFactor } = await aaveContract.getUserAccountData(addressWallet);
+				const { totalCollateralBase, totalDebtBase, healthFactor } = await aaveContract.getUserAccountData(addressWallet);
 				setUserAccountData({
-					totalCollateralBase: new BigNumber(totalCollateralBase._hex),
-					availableBorrowsBase: new BigNumber(availableBorrowsBase._hex),
-					healthFactor: new BigNumber(healthFactor._hex),
+					totalCollateralBase: new BigNumber(totalCollateralBase._hex).div(Math.pow(10,8)),
+					totalDebtBase: new BigNumber(totalDebtBase._hex).div(Math.pow(10,8)),
+					healthFactor: new BigNumber(healthFactor._hex).div(Math.pow(10,18)),
 				})
 			}
 			fetchUserAccountData();
@@ -68,9 +54,7 @@ const userAccountData = () => {
 	return userAccountData;
 }
 
-export {
-    CHAIN_IDS,
-    BASE_TOKEN_SYMBOL,    
+export {   
     RPC_URL,
 	useProtocol,
 	userAccountData,

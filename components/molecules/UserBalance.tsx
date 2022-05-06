@@ -3,8 +3,8 @@ import {StandardText} from "../typography";
 import {StyleSheet, View} from "react-native";
 import { useEffect } from 'react';
 import BigNumber from "bignumber.js";
-
-import { BASE_TOKEN_SYMBOL, useProtocol } from "../../constants/protocol";
+import { BASE_TOKEN_SYMBOL } from "../../constants/chains"
+import { useProtocol } from "../../constants/protocol";
 
 
 export const UserBalance = () => {
@@ -70,7 +70,7 @@ const getIntegerBalance = (balance: string): string => {
 const getDecimalBalance = (balance: string): string => {
 	
 	const numberBalance = balance.indexOf(".")
-	const decimalBalance = balance.substring(numberBalance+1)
+	const decimalBalance = balance.substring(numberBalance+1, numberBalance + 5)
 	const lengthDecimalBalance = decimalBalance.length;
 
 	if (balance === "") {
