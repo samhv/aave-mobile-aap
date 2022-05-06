@@ -7,17 +7,10 @@ import { STYLES } from "../../constants";
 import Svg, { ClipPath, G, Defs, Circle, Polygon } from "react-native-svg";
 import { userAccountData } from "../../constants/protocol";
 
-const MAX_RATE_ON_CIRCLE = 4
-// uint256 is a number of 256 bits
-// each byte has 8 bits
-// so, uint256 is a number of 32 bytes (256/8)
-// so finally, the max number on 32 bytes as hexadecimal is a 0x following by 64 f (each byte can be represented as ff)
-const MAX_RATE_FROM_SMART_CONTRAT = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-
 export const PortfolioIndicator = () => {
-    const { totalCollateralBase, availableBorrowsBase, healthFactor } = userAccountData();
+    const { totalCollateralBase, totalDebtBase, healthFactor } = userAccountData();
     const collateral = totalCollateralBase.toString(10);
-    const borrowed = availableBorrowsBase.toString(10);
+    const borrowed = totalDebtBase.toString(10);
 
     const sizeCircle = 80;
     const radio = sizeCircle/2;
@@ -35,7 +28,7 @@ export const PortfolioIndicator = () => {
 
     const collateralBN = new BigNumber(collateral);
     const borrowedBN = new BigNumber(borrowed);
-    const rate = healthFactor.div(MAX_RATE_FROM_SMART_CONTRAT).times(MAX_RATE_ON_CIRCLE);
+    const rate = healthFactor;
 
     const angulo = Math.PI/2 * (1 - parseFloat(rate.toString(10)));
     const x = 2 * radio * Math.cos(angulo) + radio;
@@ -74,7 +67,6 @@ export const PortfolioIndicator = () => {
                 <View style = {StyleSheet.flatten([styles.circle, styleCircle])}>
                     <Svg height={sizeCircle} width={sizeCircle}>
                         <Defs>
-                          
                             <ClipPath id="clip">
                                 <G >
                                     {polygon}
@@ -122,17 +114,17 @@ const getPositionStyleBall = (rate: BigNumber, yBall: number, xBall: number, siz
             height: sizeBall, 
             width: sizeBall,
             borderRadius: sizeBall/2,
-            backgroundColor: color,
+            backgroundColor: "#ccc",
             position: "absolute",
         }
     } else {
         return {
-            top: 0 - strockeWidth/4,
-            left: radio - strockeWidth/2,
+            top: -(sizeBall/2 - strockeWidth/4),
+            left: radio - sizeBall/2,
             height: sizeBall, 
             width: sizeBall,
             borderRadius: sizeBall/2,
-            backgroundColor: color,
+            backgroundColor: "#ccc",
             position: "absolute",
         }
     }
