@@ -5,10 +5,10 @@ import { BorrowText, DepositText, SecondaryText, StandardText } from "../typogra
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants";
 import Svg, { ClipPath, G, Defs, Circle, Polygon } from "react-native-svg";
-import { userAccountData } from "../../constants/protocol";
+import { useUserAccountData } from "../../constants/protocol";
 
 export const PortfolioIndicator = () => {
-    const { totalCollateralBase, totalDebtBase, healthFactor } = userAccountData();
+    const { totalCollateralBase, totalDebtBase, healthFactor } = useUserAccountData();
     const collateral = totalCollateralBase.toString(10);
     const borrowed = totalDebtBase.toString(10);
 

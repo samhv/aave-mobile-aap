@@ -1,7 +1,7 @@
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import { ethers } from "ethers";
 import React, { useState, useEffect } from "react";
-import { ABI, contractAddress} from "./aave_constants";
+import { ABI, contractAddress, ABI_AAVE_PROTOCOL_DATA_PROVIDER, contractAddressAaveProtocolDataProvider} from "./aave_constants";
 import BigNumber from 'bignumber.js';
 import { RPC_URL } from './chains';
 
@@ -19,7 +19,7 @@ const useProtocol = () => {
 	}
 }
 
-const userAccountData = () => {
+const useUserAccountData = () => {
 	const { addressWallet, provider, connector } = useProtocol();
 
 	const [userAccountData, setUserAccountData] = useState({ 
@@ -54,8 +54,38 @@ const userAccountData = () => {
 	return userAccountData;
 }
 
+const useAllReserversTokens = () => {
+	const { provider, connector } = useProtocol();
+
+	const [allReservesTokensData, setAllReservesTokensData] = useState({ 
+		allReservesTokens: [], 
+	});
+
+	useEffect(() => {
+		const fetchAllReservesTokens = async () => {
+			// create a aave contract protocol data provider
+			const aaveAddressDataProvider = contractAddressAaveProtocolDataProvider[connector.chainId];
+			const aaveAbiDataProvider = ABI_AAVE_PROTOCOL_DATA_PROVIDER;
+			const aaveContractProtocolDataProvider = new ethers.Contract(aaveAddressDataProvider, aaveAbiDataProvider, provider);
+			const newAllReservesTokens = await aaveContractProtocolDataProvider.getAllReservesTokens();
+			console.log(newAllReservesTokens);
+			setAllReservesTokensData({
+				allReservesTokens: newAllReservesTokens, 
+			})
+		}
+		fetchAllReservesTokens();
+		const intervalId = setInterval(fetchAllReservesTokens, 60000);
+		return () => {
+			clearInterval(intervalId)
+		};
+	}, [])
+
+	return allReservesTokensData;
+}
+
 export {   
     RPC_URL,
 	useProtocol,
-	userAccountData,
+	useUserAccountData,
+	useAllReserversTokens,
 }
