@@ -6,6 +6,7 @@ import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants"
+import { useAllReserversTokens } from "../../constants/protocol";
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
@@ -30,19 +31,17 @@ export const UserPortfolio = () => {
 };
 
 const YourAssets = () => {
-    // TODO -- get user's assets
+    const showAllTokens = useAllReserversTokens(); // calling the hooks to get all reserves tokens
+    
+    // allReservesTokens: Array<Array<string>>
+    const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
+        
+        
+        return <TokenRowYourAssets address={"tokenData"} name={" sam "}/>
+    })
+
     return <>
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
+        {listOfTokens}
     </>
 };
 
