@@ -37,7 +37,7 @@ const YourAssets = () => {
     const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
         
         
-        return <TokenRowYourAssets address={"tokenData"} name={" sam "}/>
+        return <TokenRowYourAssets address={tokenData[1]} name={tokenData[0]}/>
     })
 
     return <>
@@ -47,18 +47,16 @@ const YourAssets = () => {
 
 const YourLoans = () => {
     // TODO -- get user's loans
+    const showAllTokens = useAllReserversTokens(); // calling the hooks to get all reserves tokens
+
+    const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
+        
+        
+        return <TokenRowYourLoans address={tokenData[1]} name={tokenData[0]}/>
+    })
+
     return <>
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
+        {listOfTokens}
     </>
 };
 
