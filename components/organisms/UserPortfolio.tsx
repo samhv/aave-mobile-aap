@@ -6,7 +6,7 @@ import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants"
-import { useAllReserversTokens } from "../../constants/protocol";
+import { useAllReserversTokens, useBalances } from "../../constants/protocol";
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
@@ -31,13 +31,10 @@ export const UserPortfolio = () => {
 };
 
 const YourAssets = () => {
-    const showAllTokens = useAllReserversTokens(); // calling the hooks to get all reserves tokens
+    const tokensBalanceData = useBalances();
     
-    // allReservesTokens: Array<Array<string>>
-    const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
-        
-        
-        return <TokenRowYourAssets address={tokenData[1]} name={tokenData[0]}/>
+    const listOfTokens = tokensBalanceData.tokens.map((???) => {
+        return <TokenRowYourAssets address={???} name={???} balance={???} />
     })
 
     return <>
@@ -46,13 +43,10 @@ const YourAssets = () => {
 };
 
 const YourLoans = () => {
-    // TODO -- get user's loans
-    const showAllTokens = useAllReserversTokens(); // calling the hooks to get all reserves tokens
-
-    const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
-        
-        
-        return <TokenRowYourLoans address={tokenData[1]} name={tokenData[0]}/>
+    const tokensBalanceData = useBalances();
+    
+    const listOfTokens = tokensBalanceData.tokens.map((???) => {
+        return <TokenRowYourLoans address={???} name={???} balance={???} />
     })
 
     return <>
