@@ -12,7 +12,7 @@ const ABI = [{"inputs":[{"internalType":"contract IPoolAddressesProvider","name"
 const contractAddressAaveProtocolDataProvider = {
     [CHAIN_IDS.ETHEREUM]: "to do",
     [CHAIN_IDS.POLYGON]: "0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654",
-    [CHAIN_IDS.POLYGON_TESTNET]: "0x8f57153F18b7273f9A814b93b31Cb3f9b035e7C2"
+    [CHAIN_IDS.POLYGON_TESTNET]: "0x25f43B6FC070444535659089Ffd0D76A33f47f4C"
 }
 
 // abi protocol data provider

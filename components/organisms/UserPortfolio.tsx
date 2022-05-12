@@ -13,6 +13,7 @@ export const UserPortfolio = () => {
     // TODO -- get user's tokens
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
+    const tokens = useBalances();
     return (
         <View style={styles.container}>
                 <View style={styles.tab}>
@@ -22,19 +23,18 @@ export const UserPortfolio = () => {
             <View >
                 {
                     tabSelected === 0
-                        ? <YourAssets />
-                        : <YourLoans />
+                        ? <YourAssets tokensBalanceData={tokens} />
+                        : <YourLoans tokensBalanceData={tokens} />
                 }
             </View>
         </View>
     );
 };
 
-const YourAssets = () => {
-    const tokensBalanceData = useBalances();
+const YourAssets = ({ tokensBalanceData }) => {
     
-    const listOfTokens = tokensBalanceData.tokens.map((???) => {
-        return <TokenRowYourAssets address={???} name={???} balance={???} />
+    const listOfTokens = tokensBalanceData.tokens.map((token) => {
+        return <TokenRowYourAssets address={token.address} name={token.name} balance={token.balance.toString(10)} />
     })
 
     return <>
@@ -42,11 +42,10 @@ const YourAssets = () => {
     </>
 };
 
-const YourLoans = () => {
-    const tokensBalanceData = useBalances();
+const YourLoans = ({ tokensBalanceData }) => {
     
-    const listOfTokens = tokensBalanceData.tokens.map((???) => {
-        return <TokenRowYourLoans address={???} name={???} balance={???} />
+    const listOfTokens = tokensBalanceData.tokens.map((token) => {
+        return <TokenRowYourLoans address={token.address} name={token.name} balance={token.balance.toString(10)} />
     })
 
     return <>
