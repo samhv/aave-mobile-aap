@@ -80,7 +80,6 @@ const useAllReserversTokens = () => {
 			clearInterval(intervalId)
 		};
 	}, [])
-
 	return allReservesTokensData;
 }
 
@@ -104,7 +103,7 @@ const useBalances = (): TokenBalanceData => {
 		tokens: [],
 	});
 	useEffect(() => {
-		if (addressWallet) {
+		if (addressWallet && allReservesTokensData.allReservesTokens.length > 0) {
 			const fetchBalances = async () => {
 				const newTokenBalances: Token[] = [];
 				for (let i = 0; i < allReservesTokensData.allReservesTokens.length; i++) {
@@ -116,10 +115,12 @@ const useBalances = (): TokenBalanceData => {
 					};
 					tokensObject.name = arrayOfNameAndAddress[0];
 					tokensObject.address = arrayOfNameAndAddress[1];
-			
+
 					const contractTokens = new ethers.Contract(tokensObject.address, ABI_ERC20, provider);
 					const balanceToken = await contractTokens.balanceOf(addressWallet);
-					tokensObject.balance = new BigNumber(balanceToken._hex);
+					const decimalToken = await contractTokens.decimals();
+					const divided = Math.pow(10, decimalToken);
+					tokensObject.balance = new BigNumber(balanceToken._hex).dividedBy(divided);
 					newTokenBalances.push(tokensObject);
 				}
 				setBalanceTokens({
@@ -132,7 +133,7 @@ const useBalances = (): TokenBalanceData => {
 				clearInterval(intervalId)
 			};
 		}
-	}, [addressWallet, allReservesTokensData.allReservesTokens])
+	}, [addressWallet, allReservesTokensData.allReservesTokens.length])
 	
 	return tokensBalanceData
 }
@@ -142,5 +143,5 @@ export {
 	useProtocol,
 	useUserAccountData,
 	useAllReserversTokens,
-	useBalances
+	useBalances, 
 }
