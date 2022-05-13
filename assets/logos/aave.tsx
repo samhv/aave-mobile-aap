@@ -10,7 +10,7 @@ import Svg, {
   Circle
 } from "react-native-svg"
 
-function AaveLogo(props) {
+function AAVELogo(props) {
   return (
     <Svg
       id="Layer_1"
@@ -53,5 +53,5 @@ function AaveLogo(props) {
 }
 
 export {
-    AaveLogo
+    AAVELogo
 }

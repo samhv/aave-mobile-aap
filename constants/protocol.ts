@@ -81,6 +81,7 @@ const useAllReserversTokens = () => {
 		};
 	}, [])
 	return allReservesTokensData;
+	
 }
 
 interface Token {
