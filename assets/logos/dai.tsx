@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function DaiLogo(props) {
+function DAILogo(props) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,5 +28,5 @@ function DaiLogo(props) {
 }
 
 export {
-  DaiLogo,
+  DAILogo,
 }

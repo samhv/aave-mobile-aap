@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
-function LinkLogo(props) {
+function LINKLogo(props) {
   return (
     <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37.8 43.6" {...props}>
       <G id="Layer_2" data-name="Layer 2">
@@ -17,5 +17,5 @@ function LinkLogo(props) {
 }
 
 export {
-    LinkLogo
+    LINKLogo
 }
