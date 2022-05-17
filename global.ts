@@ -1,4 +1,5 @@
 import 'react-native-get-random-values'
+import "@ethersproject/shims"
 import { Platform, LogBox } from "react-native";
 
 export interface Global {

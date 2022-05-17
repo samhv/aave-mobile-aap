@@ -5,11 +5,12 @@ import { BorrowText, DepositText, SecondaryText, StandardText } from "../typogra
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants";
 import Svg, { ClipPath, G, Defs, Circle, Polygon } from "react-native-svg";
+import { useUserAccountData } from "../../constants/protocol";
 
 export const PortfolioIndicator = () => {
-    // TODO -- get collateral, borrowed and rate
-    const collateral = "6000";
-    const borrowed = "5000";
+    const { totalCollateralBase, totalDebtBase, healthFactor } = useUserAccountData();
+    const collateral = totalCollateralBase.toString(10);
+    const borrowed = totalDebtBase.toString(10);
 
     const sizeCircle = 80;
     const radio = sizeCircle/2;
@@ -27,9 +28,9 @@ export const PortfolioIndicator = () => {
 
     const collateralBN = new BigNumber(collateral);
     const borrowedBN = new BigNumber(borrowed);
-    const rate = collateralBN.dividedBy(borrowedBN);
-    
-    const angulo = Math.PI/2 * (1 - parseFloat(rate.toString()));
+    const rate = healthFactor;
+
+    const angulo = Math.PI/2 * (1 - parseFloat(rate.toString(10)));
     const x = 2 * radio * Math.cos(angulo) + radio;
     const y = radio - 2 * radio * Math.sin(angulo);
 
@@ -66,7 +67,6 @@ export const PortfolioIndicator = () => {
                 <View style = {StyleSheet.flatten([styles.circle, styleCircle])}>
                     <Svg height={sizeCircle} width={sizeCircle}>
                         <Defs>
-                          
                             <ClipPath id="clip">
                                 <G >
                                     {polygon}
@@ -114,17 +114,17 @@ const getPositionStyleBall = (rate: BigNumber, yBall: number, xBall: number, siz
             height: sizeBall, 
             width: sizeBall,
             borderRadius: sizeBall/2,
-            backgroundColor: color,
+            backgroundColor: "#ccc",
             position: "absolute",
         }
     } else {
         return {
-            top: 0 - strockeWidth/4,
-            left: radio - strockeWidth/2,
+            top: -(sizeBall/2 - strockeWidth/4),
+            left: radio - sizeBall/2,
             height: sizeBall, 
             width: sizeBall,
             borderRadius: sizeBall/2,
-            backgroundColor: color,
+            backgroundColor: "#ccc",
             position: "absolute",
         }
     }
