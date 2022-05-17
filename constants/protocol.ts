@@ -1,9 +1,11 @@
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import { ethers } from "ethers";
 import React, { useState, useEffect } from "react";
-import { ABI, contractAddress, ABI_AAVE_PROTOCOL_DATA_PROVIDER, contractAddressAaveProtocolDataProvider} from "./aave_constants";
+import { ABI, contractAddress, ABI_AAVE_PROTOCOL_DATA_PROVIDER, contractAddressAaveProtocolDataProvider, ABI_ERC20 } from "./aave_constants";
 import BigNumber from 'bignumber.js';
 import { RPC_URL } from './chains';
+import { WalletAddress } from '../components/molecules/WalletAddress';
+
 
 const useProtocol = () => {
 	const connector = useWalletConnect()
@@ -58,7 +60,7 @@ const useAllReserversTokens = () => {
 	const { provider, connector } = useProtocol();
 
 	const [allReservesTokensData, setAllReservesTokensData] = useState({ 
-		allReservesTokens: [], 
+		allReservesTokens: [],
 	});
 
 	useEffect(() => {
@@ -68,7 +70,6 @@ const useAllReserversTokens = () => {
 			const aaveAbiDataProvider = ABI_AAVE_PROTOCOL_DATA_PROVIDER;
 			const aaveContractProtocolDataProvider = new ethers.Contract(aaveAddressDataProvider, aaveAbiDataProvider, provider);
 			const newAllReservesTokens = await aaveContractProtocolDataProvider.getAllReservesTokens();
-			console.log(newAllReservesTokens);
 			setAllReservesTokensData({
 				allReservesTokens: newAllReservesTokens, 
 			})
@@ -79,8 +80,63 @@ const useAllReserversTokens = () => {
 			clearInterval(intervalId)
 		};
 	}, [])
-
 	return allReservesTokensData;
+	
+}
+
+interface Token {
+	name: string
+	address: string
+	balance: BigNumber
+}
+
+interface TokenBalanceData {
+	tokens: Token[]
+}
+
+const useBalances = (): TokenBalanceData => {
+	// should fetch list of token (allreservestokens)
+	// should fetch balance of each token
+	const allReservesTokensData = useAllReserversTokens();
+	const { addressWallet, provider } = useProtocol();
+	
+	const [tokensBalanceData, setBalanceTokens] = useState<TokenBalanceData>({ 
+		tokens: [],
+	});
+	useEffect(() => {
+		if (addressWallet && allReservesTokensData.allReservesTokens.length > 0) {
+			const fetchBalances = async () => {
+				const newTokenBalances: Token[] = [];
+				for (let i = 0; i < allReservesTokensData.allReservesTokens.length; i++) {
+					const arrayOfNameAndAddress = allReservesTokensData.allReservesTokens[i];
+					const tokensObject: Token = {
+						name: "",
+						address: "",
+						balance: new BigNumber("0")
+					};
+					tokensObject.name = arrayOfNameAndAddress[0];
+					tokensObject.address = arrayOfNameAndAddress[1];
+
+					const contractTokens = new ethers.Contract(tokensObject.address, ABI_ERC20, provider);
+					const balanceToken = await contractTokens.balanceOf(addressWallet);
+					const decimalToken = await contractTokens.decimals();
+					const divided = Math.pow(10, decimalToken);
+					tokensObject.balance = new BigNumber(balanceToken._hex).dividedBy(divided);
+					newTokenBalances.push(tokensObject);
+				}
+				setBalanceTokens({
+					tokens: newTokenBalances,
+				})
+			}
+			fetchBalances();
+			const intervalId = setInterval(fetchBalances, 60000);
+			return () => {
+				clearInterval(intervalId)
+			};
+		}
+	}, [addressWallet, allReservesTokensData.allReservesTokens.length])
+	
+	return tokensBalanceData
 }
 
 export {   
@@ -88,4 +144,5 @@ export {
 	useProtocol,
 	useUserAccountData,
 	useAllReserversTokens,
+	useBalances, 
 }

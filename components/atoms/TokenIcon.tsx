@@ -2,37 +2,45 @@ import React from "react";
 import { View } from "./View";
 import { Image } from "./Image";  
 import {aaveAddress} from "../../constants/tokens";
+import { dictionaryTokenIcon } from "../../constants/tokenIcon";
+import { CHAIN_IDS } from "../../constants/chains";
 
 // in 
 interface TokenIconInterface {
     address: string // the address of the asset
     size: number // the size of the icon asset
+    chainId: number
 }
 
-export const TokenIcon: React.FC<TokenIconInterface> = ({ address, size }) => {
-                        if (address === aaveAddress) {
-                            return <View height={size}
-                                         width={size} 
-                                        borderRadius={20} 
-                                        backgroundColor={"#F9A606"} 
-                                        alignItems={"center"} 
-                                        justifyContent={"center"} >
-                                   <Image  
-                                       source={{ uri: 'https://cryptologos.cc/logos/aave-aave-logo.png?v=022' }}
-                                       style={{ width: size, height: size }}
-                                  />
-                                  </View>;  
-                        } else {
-                            return <View height={size}
-                                   width={size} 
-                                   borderRadius={20} 
-                                   backgroundColor={"#F9A606"} 
-                                   alignItems={"center"} 
-                                   justifyContent={"center"} >
-                                  </View>;  
-                        }
-                    }; 
+const TokenIcon: React.FC<TokenIconInterface> = ({ address, size, chainId }) => {
     
-    // TODO -- let's get url from the address
+    const Logo = dictionaryTokenIcon[chainId][address];
 
+    if(!Logo) {
+        return <View height={size}
+                width={size}
+                borderRadius={size/2} 
+                backgroundColor={"#F9A606"} 
+                alignItems={"center"} 
+                justifyContent={"center"} >
+                </View>
+    }
 
+    return <View height={size}
+                width={size} 
+                borderRadius={size/2} 
+                alignItems={"center"} 
+                justifyContent={"center"} >
+            <Logo height={size}
+                  width={size} />
+    </View>
+                        
+}; 
+
+TokenIcon.defaultProps = {
+    chainId: CHAIN_IDS.POLYGON_TESTNET
+}
+
+export {
+    TokenIcon
+}
