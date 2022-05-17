@@ -1,7 +1,7 @@
 import React from "react";
 import {walletSlice} from "../redux-store/wallet";
 import {useDispatch} from "react-redux";
-import { useWalletConnect } from "@walletconnect/react-native-dapp";
+import { useWalletConnect, useWalletConnectContext } from "@walletconnect/react-native-dapp";
 import { useEffect } from "react";
 
 export const useConnectWallet = () => {
@@ -9,7 +9,7 @@ export const useConnectWallet = () => {
     const dispatch = useDispatch();
     
     const connector = useWalletConnect();
-    
+
     const connectWallet = React.useCallback(() => {
         return connector.connect();
     }, [connector]);

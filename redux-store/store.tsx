@@ -24,4 +24,4 @@ export const ReduxProvider = ({ children }) => {
   );
 };
 
-store.subscribe(() => console.log(store.getState()))
+// store.subscribe(() => console.log(store.getState()))
