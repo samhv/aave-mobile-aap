@@ -6,12 +6,14 @@ import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants"
+import { useAllReserversTokens, useBalances } from "../../constants/protocol";
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
     // TODO -- get user's tokens
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
+    const tokens = useBalances();
     return (
         <View style={styles.container}>
                 <View style={styles.tab}>
@@ -21,45 +23,33 @@ export const UserPortfolio = () => {
             <View >
                 {
                     tabSelected === 0
-                        ? <YourAssets />
-                        : <YourLoans />
+                        ? <YourAssets tokensBalanceData={tokens} />
+                        : <YourLoans tokensBalanceData={tokens} />
                 }
             </View>
         </View>
     );
 };
 
-const YourAssets = () => {
-    // TODO -- get user's assets
+const YourAssets = ({ tokensBalanceData }) => {
+    
+    const listOfTokens = tokensBalanceData.tokens.map((token) => {
+        return <TokenRowYourAssets address={token.address} name={token.name} balance={token.balance.toString(10)} />
+    })
+
     return <>
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourAssets address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
+        {listOfTokens}
     </>
 };
 
-const YourLoans = () => {
-    // TODO -- get user's loans
+const YourLoans = ({ tokensBalanceData }) => {
+    
+    const listOfTokens = tokensBalanceData.tokens.map((token) => {
+        return <TokenRowYourLoans address={token.address} name={token.name} balance={token.balance.toString(10)} />
+    })
+
     return <>
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
-        <TokenRowYourLoans address={"0x..."} name={"USD Coin"} apy={"5.57"} balance={"3.26"} />
+        {listOfTokens}
     </>
 };
 

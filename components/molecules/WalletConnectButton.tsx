@@ -3,7 +3,7 @@ import {Button} from "../atoms/Button";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 export const WalletConnectButton = () => {
-    const connectWallet = useConnectWallet();
+    const { connectWallet } = useConnectWallet();
     return (
         <Button
             title={"Connect Wallet"}

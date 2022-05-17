@@ -1,23 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import {StandardText} from "../typography";
 import {StyleSheet, View} from "react-native";
+import { useEffect } from 'react';
+import BigNumber from "bignumber.js";
+import { BASE_TOKEN_SYMBOL } from "../../constants/chains"
+import { useProtocol } from "../../constants/protocol";
 
 
 export const UserBalance = () => {
 
-    const balance = "12453.123";
-
-	const intergerBalance = getIntegerBalance(balance);
+    const [balance, setBalance] = useState("0");
+	const { addressWallet, provider, connector } = useProtocol();
 	
-	const decimalBalance = getDecimalBalance(balance);
+	
+	const intergerBalance: string = getIntegerBalance(balance);
+	const decimalBalance: string = getDecimalBalance(balance);
+
+	useEffect(() => {
+		if (addressWallet) {
+			const fetchBalance = async () => {
+				const balanceUser = await provider.getBalance(addressWallet);
+				const balanceUserBN = new BigNumber(balanceUser._hex)
+				const numberOfDecimals = new BigNumber(10).pow(18)
+				const balanceFormated = balanceUserBN.div(numberOfDecimals).toString(); 
+				setBalance(balanceFormated);
+			}
+			fetchBalance();
+			const intervalId = setInterval(fetchBalance, 60000);
+			
+			return () => {
+				clearInterval(intervalId)
+			};
+		}
+	}, [addressWallet])
 
 	return (
 		<View style={styles.container}>
-			<StandardText style={styles.integerBalance}>
-				${intergerBalance}
-			</StandardText>
-			<StandardText style={styles.decimalBalance}>
-				.{decimalBalance}
+			<View style={styles.containerBalance}>
+				<StandardText style={styles.integerBalance}>
+					{intergerBalance}
+				</StandardText>
+				<StandardText style={styles.decimalBalance}>
+					.{decimalBalance}
+				</StandardText>
+			</View>
+			<StandardText>
+				{BASE_TOKEN_SYMBOL[connector.chainId]}
 			</StandardText>
 		</View>
 	)
@@ -42,7 +70,7 @@ const getIntegerBalance = (balance: string): string => {
 const getDecimalBalance = (balance: string): string => {
 	
 	const numberBalance = balance.indexOf(".")
-	const decimalBalance = balance.substring(numberBalance+1, numberBalance+3)
+	const decimalBalance = balance.substring(numberBalance+1, numberBalance + 5)
 	const lengthDecimalBalance = decimalBalance.length;
 
 	if (balance === "") {
@@ -61,17 +89,17 @@ const getDecimalBalance = (balance: string): string => {
 }      
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 60,
+	container: {
+        alignItems: "center"
     },
-    container: {
+    containerBalance: {
         flexDirection: "row",
     },
     integerBalance: {
-        fontSize:60,
+        fontSize: 54,
     },
     decimalBalance: {
-        fontSize:60,
+        fontSize: 54,
 		opacity: 0.5,
-    }
+    },
 });
