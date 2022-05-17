@@ -6,13 +6,14 @@ import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants"
-import { useAllReserversTokens } from "../../constants/protocol";
+import { useAllReserversTokens, useBalances } from "../../constants/protocol";
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
     // TODO -- get user's tokens
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
+    const tokens = useBalances();
     return (
         <View style={styles.container}>
                 <View style={styles.tab}>
@@ -22,22 +23,18 @@ export const UserPortfolio = () => {
             <View >
                 {
                     tabSelected === 0
-                        ? <YourAssets />
-                        : <YourLoans />
+                        ? <YourAssets tokensBalanceData={tokens} />
+                        : <YourLoans tokensBalanceData={tokens} />
                 }
             </View>
         </View>
     );
 };
 
-const YourAssets = () => {
-    const showAllTokens = useAllReserversTokens(); // calling the hooks to get all reserves tokens
+const YourAssets = ({ tokensBalanceData }) => {
     
-    // allReservesTokens: Array<Array<string>>
-    const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
-        
-        
-        return <TokenRowYourAssets address={tokenData[1]} name={tokenData[0]}/>
+    const listOfTokens = tokensBalanceData.tokens.map((token) => {
+        return <TokenRowYourAssets address={token.address} name={token.name} balance={token.balance.toString(10)} />
     })
 
     return <>
@@ -45,14 +42,10 @@ const YourAssets = () => {
     </>
 };
 
-const YourLoans = () => {
-    // TODO -- get user's loans
-    const showAllTokens = useAllReserversTokens(); // calling the hooks to get all reserves tokens
-
-    const listOfTokens = showAllTokens.allReservesTokens.map((tokenData: string[]) => {
-        
-        
-        return <TokenRowYourLoans address={tokenData[1]} name={tokenData[0]}/>
+const YourLoans = ({ tokensBalanceData }) => {
+    
+    const listOfTokens = tokensBalanceData.tokens.map((token) => {
+        return <TokenRowYourLoans address={token.address} name={token.name} balance={token.balance.toString(10)} />
     })
 
     return <>
