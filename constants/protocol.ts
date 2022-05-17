@@ -4,11 +4,20 @@ import React, { useState, useEffect } from "react";
 import { ABI, contractAddress, ABI_AAVE_PROTOCOL_DATA_PROVIDER, contractAddressAaveProtocolDataProvider, ABI_ERC20 } from "./aave_constants";
 import BigNumber from 'bignumber.js';
 import { RPC_URL } from './chains';
-import { WalletAddress } from '../components/molecules/WalletAddress';
+import WalletConnect from "@walletconnect/client";
 
+interface BlockChainContext {
+	addressWallet: string,
+	provider: ethers.providers.JsonRpcProvider,
+	connector: WalletConnect
+}
 
-const useProtocol = () => {
-	const connector = useWalletConnect()
+/**
+ * Create a provider to call blockchain
+ * @returns everything you need to make blockchain calls
+ */
+const useProtocol = (): BlockChainContext => {
+	const connector = useWalletConnect();
 	const chainId = connector.chainId
 	const rpc_url = RPC_URL[chainId]
 	const provider = new ethers.providers.JsonRpcProvider(rpc_url, chainId);
@@ -21,7 +30,17 @@ const useProtocol = () => {
 	}
 }
 
-const useUserAccountData = () => {
+interface UserAccountData {
+	totalCollateralBase: BigNumber
+	totalDebtBase: BigNumber
+	healthFactor: BigNumber
+}
+
+/**
+ * Bring user account data across all the reserves
+ * @returns collateral, debt and health factor
+ */
+const useUserAccountData = (): UserAccountData => {
 	const { addressWallet, provider, connector } = useProtocol();
 
 	const [userAccountData, setUserAccountData] = useState({ 
@@ -56,11 +75,25 @@ const useUserAccountData = () => {
 	return userAccountData;
 }
 
-const useAllReserversTokens = () => {
+interface TokenReserve {
+	name: string
+	address: string
+}
+
+interface AllReservesTokens {
+	tokens: TokenReserve[]
+}
+
+/**
+ * List of reserve tokens 
+ * @returns Returns list of the existing reserves in the pool.
+
+ */
+const useAllReserversTokens = (): AllReservesTokens => {
 	const { provider, connector } = useProtocol();
 
-	const [allReservesTokensData, setAllReservesTokensData] = useState({ 
-		allReservesTokens: [],
+	const [allReservesTokensData, setAllReservesTokensData] = useState<AllReservesTokens>({ 
+		tokens: [],
 	});
 
 	useEffect(() => {
@@ -69,9 +102,16 @@ const useAllReserversTokens = () => {
 			const aaveAddressDataProvider = contractAddressAaveProtocolDataProvider[connector.chainId];
 			const aaveAbiDataProvider = ABI_AAVE_PROTOCOL_DATA_PROVIDER;
 			const aaveContractProtocolDataProvider = new ethers.Contract(aaveAddressDataProvider, aaveAbiDataProvider, provider);
+			// [  ["usdc", "0x12312"], ["aave", "0x1231233"], ... ]
 			const newAllReservesTokens = await aaveContractProtocolDataProvider.getAllReservesTokens();
+			
 			setAllReservesTokensData({
-				allReservesTokens: newAllReservesTokens, 
+				tokens: newAllReservesTokens.map((a: string[]): TokenReserve => {
+					return {
+						name: a[0],
+						address:a[1],
+					}
+				}), 
 			})
 		}
 		fetchAllReservesTokens();
@@ -94,9 +134,14 @@ interface TokenBalanceData {
 	tokens: Token[]
 }
 
-const useBalances = (): TokenBalanceData => {
-	// should fetch list of token (allreservestokens)
+// should fetch list of token (allreservestokens)
 	// should fetch balance of each token
+/**
+ * List all of the token incluided balance
+ * @returns object with name, address and balance
+ */
+const useBalances = (): TokenBalanceData => {
+	
 	const allReservesTokensData = useAllReserversTokens();
 	const { addressWallet, provider } = useProtocol();
 	
@@ -104,18 +149,17 @@ const useBalances = (): TokenBalanceData => {
 		tokens: [],
 	});
 	useEffect(() => {
-		if (addressWallet && allReservesTokensData.allReservesTokens.length > 0) {
+		if (addressWallet && allReservesTokensData.tokens.length > 0) {
 			const fetchBalances = async () => {
 				const newTokenBalances: Token[] = [];
-				for (let i = 0; i < allReservesTokensData.allReservesTokens.length; i++) {
-					const arrayOfNameAndAddress = allReservesTokensData.allReservesTokens[i];
+				for (let i = 0; i < allReservesTokensData.tokens.length; i++) {
+					const reserveToken = allReservesTokensData.tokens[i];
+					
 					const tokensObject: Token = {
-						name: "",
-						address: "",
+						name: reserveToken.name,
+						address: reserveToken.address,
 						balance: new BigNumber("0")
 					};
-					tokensObject.name = arrayOfNameAndAddress[0];
-					tokensObject.address = arrayOfNameAndAddress[1];
 
 					const contractTokens = new ethers.Contract(tokensObject.address, ABI_ERC20, provider);
 					const balanceToken = await contractTokens.balanceOf(addressWallet);
