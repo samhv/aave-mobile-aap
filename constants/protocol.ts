@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import React, { useState, useEffect } from "react";
 import { ABI, contractAddress, ABI_AAVE_PROTOCOL_DATA_PROVIDER, contractAddressAaveProtocolDataProvider, ABI_ERC20 } from "./aave_constants";
 import BigNumber from 'bignumber.js';
-import { RPC_URL } from './chains';
+import { CHAIN_IDS, RPC_URL } from './chains';
 import WalletConnect from "@walletconnect/client";
 
 interface BlockChainContext {
@@ -128,22 +128,24 @@ interface Token {
 	name: string
 	address: string
 	balance: BigNumber
+	supplyRate: BigNumber
+	variableBorrow: BigNumber
+	stableBorrow: BigNumber
 }
 
 interface TokenBalanceData {
 	tokens: Token[]
 }
 
-// should fetch list of token (allreservestokens)
-	// should fetch balance of each token
 /**
- * List all of the token incluided balance
- * @returns object with name, address and balance
+ * List all the tokens including balances and APYs
+ * @returns list of objects with name, address, balance, supply rate, variable borrow rate and stable borrow rate
  */
 const useBalances = (): TokenBalanceData => {
 	
 	const allReservesTokensData = useAllReserversTokens();
-	const { addressWallet, provider } = useProtocol();
+	const { addressWallet, provider, connector } = useProtocol();
+	
 	
 	const [tokensBalanceData, setBalanceTokens] = useState<TokenBalanceData>({ 
 		tokens: [],
@@ -151,34 +153,57 @@ const useBalances = (): TokenBalanceData => {
 	useEffect(() => {
 		if (addressWallet && allReservesTokensData.tokens.length > 0) {
 			const fetchBalances = async () => {
+				// new array that contain Token objects with keys name, address and balance
 				const newTokenBalances: Token[] = [];
+				const chainIdUserIsLoggedIn: number = connector.chainId
+				const addressPool: string = contractAddress[chainIdUserIsLoggedIn]
+				const contract = new ethers.Contract(addressPool, ABI, provider);
 				for (let i = 0; i < allReservesTokensData.tokens.length; i++) {
+					// save the element in position [i] of the list of reserve tokens
 					const reserveToken = allReservesTokensData.tokens[i];
-					
+					// we create a new token object where their values are get from reservesToken (name && address)
+					// we start the balance in zero, to set it later
 					const tokensObject: Token = {
 						name: reserveToken.name,
 						address: reserveToken.address,
-						balance: new BigNumber("0")
+						balance: new BigNumber("0"),
+						supplyRate: new BigNumber("0"),
+						variableBorrow: new BigNumber("0"),
+						stableBorrow: new BigNumber("0")
 					};
-
+					// we create a contract to access to the token methods  
 					const contractTokens = new ethers.Contract(tokensObject.address, ABI_ERC20, provider);
+					// we access to the balance from each token(coin)
 					const balanceToken = await contractTokens.balanceOf(addressWallet);
+					// return number of decimal that has each token
 					const decimalToken = await contractTokens.decimals();
 					const divided = Math.pow(10, decimalToken);
+					// divided base 10 over decimaltoken
 					tokensObject.balance = new BigNumber(balanceToken._hex).dividedBy(divided);
+					// return reserveData from Pool contract
+					const apyBalance = await contract.getReserveData(tokensObject.address);
+
+					const dividedRatios = Math.pow(10, 25);
+					tokensObject.supplyRate = new BigNumber(apyBalance[2]._hex).dividedBy(dividedRatios);
+					tokensObject.variableBorrow = new BigNumber(apyBalance[4]._hex).dividedBy(dividedRatios);
+					tokensObject.stableBorrow = new BigNumber(apyBalance[5]._hex).dividedBy(dividedRatios);
+				
+					// add the token created to the list
 					newTokenBalances.push(tokensObject);
 				}
+				// set the value of token from newTokenBalances
 				setBalanceTokens({
 					tokens: newTokenBalances,
 				})
 			}
+			//set the value of interval in 1 minute
 			fetchBalances();
 			const intervalId = setInterval(fetchBalances, 60000);
 			return () => {
 				clearInterval(intervalId)
 			};
 		}
-	}, [addressWallet, allReservesTokensData.allReservesTokens.length])
+	}, [addressWallet, allReservesTokensData.tokens.length])
 	
 	return tokensBalanceData
 }
@@ -189,4 +214,5 @@ export {
 	useUserAccountData,
 	useAllReserversTokens,
 	useBalances, 
+	TokenBalanceData
 }

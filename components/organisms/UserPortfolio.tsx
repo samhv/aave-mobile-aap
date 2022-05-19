@@ -6,14 +6,14 @@ import {walletSelectors} from "../../redux-store/wallet";
 import {Button} from "../atoms/Button";
 import { StyleSheet } from "react-native";
 import { STYLES } from "../../constants"
-import { useAllReserversTokens, useBalances } from "../../constants/protocol";
+import { TokenBalanceData, useBalances } from "../../constants/protocol";
 
 export const UserPortfolio = () => {
     const address = useSelector(walletSelectors.address);
     // TODO -- get user's tokens
     const [tabSelected, setTabSelected] = useState(0);
     // TODO -- refactor tabs
-    const tokens = useBalances();
+    const tokens: TokenBalanceData = useBalances();
     return (
         <View style={styles.container}>
                 <View style={styles.tab}>
@@ -31,10 +31,14 @@ export const UserPortfolio = () => {
     );
 };
 
-const YourAssets = ({ tokensBalanceData }) => {
+interface YourAssetsInterface {
+    tokensBalanceData: TokenBalanceData
+}
+
+const YourAssets: React.FC<YourAssetsInterface> = ({ tokensBalanceData }) => {
     
     const listOfTokens = tokensBalanceData.tokens.map((token) => {
-        return <TokenRowYourAssets address={token.address} name={token.name} balance={token.balance.toString(10)} />
+        return <TokenRowYourAssets address={token.address} name={token.name} balance={token.balance.toString(10)} apy={token.supplyRate.toFixed(2)} />
     })
 
     return <>
