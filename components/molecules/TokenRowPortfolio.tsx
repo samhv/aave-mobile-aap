@@ -4,7 +4,15 @@ import {View} from "../atoms/View";
 import {BorrowText, DepositText, StandardText} from "../typography";
 import {STYLES} from "../../constants";
 
-const TokenRowPortfolio = ({ address, name, apy, balance, TextComponent }) => {
+interface TokenRowPortfolioInterface {
+    address: string
+    name: string
+    apy: string
+    balance: string
+    TextComponent: React.FC
+}
+
+const TokenRowPortfolio: React.FC<TokenRowPortfolioInterface> = ({ address, name, apy, balance, TextComponent }) => {
    return <View height={STYLES.tokenRow.height} width={"100%"} flexDirection={"row"} alignItems={"center"}>
            <TokenIcon address={address} size={40} />
            <View marginLeft={10}>
@@ -25,7 +33,14 @@ const TokenRowPortfolio = ({ address, name, apy, balance, TextComponent }) => {
    </View>
 };
 
-export const TokenRowYourAssets = ({ address, name, apy, balance }) => {
+interface TokenRowYourAssetsInterface {
+    address: string
+    name: string
+    apy: string
+    balance: string
+}
+
+export const TokenRowYourAssets: React.FC<TokenRowYourAssetsInterface> = ({ address, name, apy, balance }) => {
     return <TokenRowPortfolio
         address={address}
         name={name}
