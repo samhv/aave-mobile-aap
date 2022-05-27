@@ -18,6 +18,7 @@ export const DepositScreen = () => {
 };
 
 export const TemplateScreen = ({ title, body }) => {
+    
     return (
         <View flex={1} backgroundColor={STYLES.screen.backgroundColor}>
             <View alignItems="center" jusitfyContent="center" marginTop={STYLES.screen.paddingTop}>

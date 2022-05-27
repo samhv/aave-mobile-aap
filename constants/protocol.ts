@@ -3,8 +3,13 @@ import { ethers } from "ethers";
 import React, { useState, useEffect } from "react";
 import { ABI, contractAddress, ABI_AAVE_PROTOCOL_DATA_PROVIDER, contractAddressAaveProtocolDataProvider, ABI_ERC20 } from "./aave_constants";
 import BigNumber from 'bignumber.js';
-import { RPC_URL } from './chains';
+import { CHAIN_IDS, RPC_URL } from './chains';
 import WalletConnect from "@walletconnect/client";
+import {
+	Multicall,
+	ContractCallResults,
+	ContractCallContext,
+  } from 'ethereum-multicall';
 
 interface BlockChainContext {
 	addressWallet: string,
@@ -57,11 +62,13 @@ const useUserAccountData = (): UserAccountData => {
 				const aaveAbi = ABI;
 				const aaveContract = new ethers.Contract(aaveAddress, aaveAbi, provider);
 				const { totalCollateralBase, totalDebtBase, healthFactor } = await aaveContract.getUserAccountData(addressWallet);
+				const divided = Math.pow(10,8)
 				setUserAccountData({
-					totalCollateralBase: new BigNumber(totalCollateralBase._hex).div(Math.pow(10,8)),
-					totalDebtBase: new BigNumber(totalDebtBase._hex).div(Math.pow(10,8)),
+					totalCollateralBase: new BigNumber(totalCollateralBase._hex).div(divided),
+					totalDebtBase: new BigNumber(totalDebtBase._hex).div(divided),
 					healthFactor: new BigNumber(healthFactor._hex).div(Math.pow(10,18)),
 				})
+				
 			}
 			fetchUserAccountData();
 			const intervalId = setInterval(fetchUserAccountData, 60000);
@@ -84,109 +91,129 @@ interface AllReservesTokens {
 	tokens: TokenReserve[]
 }
 
-/**
- * List of reserve tokens 
- * @returns Returns list of the existing reserves in the pool.
 
- */
-const useAllReserversTokens = (): AllReservesTokens => {
-	const { provider, connector } = useProtocol();
-
-	const [allReservesTokensData, setAllReservesTokensData] = useState<AllReservesTokens>({ 
-		tokens: [],
-	});
-
-	useEffect(() => {
-		const fetchAllReservesTokens = async () => {
-			// create a aave contract protocol data provider
-			const aaveAddressDataProvider = contractAddressAaveProtocolDataProvider[connector.chainId];
-			const aaveAbiDataProvider = ABI_AAVE_PROTOCOL_DATA_PROVIDER;
-			const aaveContractProtocolDataProvider = new ethers.Contract(aaveAddressDataProvider, aaveAbiDataProvider, provider);
-			// [  ["usdc", "0x12312"], ["aave", "0x1231233"], ... ]
-			const newAllReservesTokens = await aaveContractProtocolDataProvider.getAllReservesTokens();
-			
-			setAllReservesTokensData({
-				tokens: newAllReservesTokens.map((a: string[]): TokenReserve => {
-					return {
-						name: a[0],
-						address:a[1],
-					}
-				}), 
-			})
+const getAllTokensData = async (addressWallet: string, provider: ethers.providers.JsonRpcProvider, connector: WalletConnect): Promise<Token[]> => {
+	// Let's call Data Provider Contract to get the list of reserve tokens
+	const aaveAddressDataProvider: string = contractAddressAaveProtocolDataProvider[connector.chainId];
+	const aaveContractProtocolDataProvider: ethers.Contract = new ethers.Contract(aaveAddressDataProvider, ABI_AAVE_PROTOCOL_DATA_PROVIDER, provider);
+	// The contract returns something like [  ["usdc", "0x12312"], ["aave", "0x1231233"], ... ]
+	const newAllReservesTokens: string[][] = await aaveContractProtocolDataProvider.getAllReservesTokens();
+	const tokenReserves = newAllReservesTokens.map((tokenFromContract: string[]): TokenReserve => {
+		return {
+			name: tokenFromContract[0],
+			address: tokenFromContract[1],
 		}
-		fetchAllReservesTokens();
-		const intervalId = setInterval(fetchAllReservesTokens, 60000);
-		return () => {
-			clearInterval(intervalId)
-		};
-	}, [])
-	return allReservesTokensData;
-	
+	})
+	// In order to fetch balances and reserve data, we'll create an array of calls to execute all of them at the same time
+	const poolContractAddress: string = contractAddress[connector.chainId];
+	const calls: ContractCallContext[] = []
+	for (const tokenReserve of tokenReserves) {
+		// Let's create the calls to ERC20 contract, for both, decimals and balanceOf.
+		const erc20CallId = `erc20-${tokenReserve.address}`;
+		const callERC20: ContractCallContext = {
+			reference: erc20CallId, 
+			contractAddress: tokenReserve.address,
+			abi: ABI_ERC20,
+			calls: [
+				{ reference: 'decimals', methodName: 'decimals', methodParameters: [] },
+				{ reference: 'balance', methodName: 'balanceOf', methodParameters: [addressWallet] },
+			]
+		}
+		// Let's create the calls to Pool contract to get the data of the reserve
+		const poolCallId = `pool-${tokenReserve.address}`
+		const callPool: ContractCallContext = {
+			reference: poolCallId,
+			contractAddress: poolContractAddress,
+			abi: ABI,
+			calls: [{ reference: 'reserveData', methodName: 'getReserveData', methodParameters: [tokenReserve.address] }]
+		}
+		// Let's add the calls to our array
+		calls.push(callERC20)
+		calls.push(callPool)
+	}
+	// Let's execute all the call at the same time with Multicall
+	const multicall = new Multicall({ ethersProvider: provider, tryAggregate: true });
+	const callResults: ContractCallResults = await multicall.call(calls);
+	const results = callResults["results"];
+	// Given the response of the multicall, let's build our final array of tokens
+	const listOfTokens = []
+	for (const tokenReserve of tokenReserves) {
+		const tokenAddress = tokenReserve.address
+		// ERC20 call data
+		const erc20CallId = `erc20-${tokenReserve.address}`;
+		const decimalTokenRaw = results[erc20CallId]["callsReturnContext"][0]["returnValues"][0]
+		const balanceTokenRaw = results[erc20CallId]["callsReturnContext"][1]["returnValues"][0].hex
+		// ERC20 computed data
+		const divided = Math.pow(10, decimalTokenRaw);
+		const balance = new BigNumber(balanceTokenRaw).dividedBy(divided);
+		// Pool call data
+		const poolCallId = `pool-${tokenReserve.address}`
+		const supplyRateRaw = results[poolCallId]["callsReturnContext"][0]["returnValues"][2].hex
+		const variableBorrowRaw = results[poolCallId]["callsReturnContext"][0]["returnValues"][4].hex
+		const stableBorrowRaw = results[poolCallId]["callsReturnContext"][0]["returnValues"][5].hex
+		// Pool computed data
+		const dividedRatios = Math.pow(10, 25);
+		const supplyRate = new BigNumber(supplyRateRaw).dividedBy(dividedRatios);
+		const variableBorrow = new BigNumber(variableBorrowRaw).dividedBy(dividedRatios);
+		const stableBorrow = new BigNumber(stableBorrowRaw).dividedBy(dividedRatios);
+		// Let's create the token with the computed data and add it to the array
+		const newToken: Token = {
+			name: tokenReserve.name,
+			address: tokenReserve.address,
+			balance,
+			supplyRate,
+			variableBorrow,
+			stableBorrow,
+		}
+		listOfTokens.push(newToken)
+	}
+	return listOfTokens;
 }
 
-interface Token {
-	name: string
-	address: string
-	balance: BigNumber
-}
-
-interface TokenBalanceData {
-	tokens: Token[]
-}
-
-// should fetch list of token (allreservestokens)
-	// should fetch balance of each token
-/**
- * List all of the token incluided balance
- * @returns object with name, address and balance
- */
 const useBalances = (): TokenBalanceData => {
-	
-	const allReservesTokensData = useAllReserversTokens();
-	const { addressWallet, provider } = useProtocol();
-	
+	const { addressWallet, provider, connector }: BlockChainContext = useProtocol();
 	const [tokensBalanceData, setBalanceTokens] = useState<TokenBalanceData>({ 
 		tokens: [],
+		loading: true,
 	});
 	useEffect(() => {
-		if (addressWallet && allReservesTokensData.tokens.length > 0) {
+		if (addressWallet) {
 			const fetchBalances = async () => {
-				const newTokenBalances: Token[] = [];
-				for (let i = 0; i < allReservesTokensData.tokens.length; i++) {
-					const reserveToken = allReservesTokensData.tokens[i];
-					
-					const tokensObject: Token = {
-						name: reserveToken.name,
-						address: reserveToken.address,
-						balance: new BigNumber("0")
-					};
-
-					const contractTokens = new ethers.Contract(tokensObject.address, ABI_ERC20, provider);
-					const balanceToken = await contractTokens.balanceOf(addressWallet);
-					const decimalToken = await contractTokens.decimals();
-					const divided = Math.pow(10, decimalToken);
-					tokensObject.balance = new BigNumber(balanceToken._hex).dividedBy(divided);
-					newTokenBalances.push(tokensObject);
-				}
+				const tokens: Token[] = await getAllTokensData(addressWallet, provider, connector);
 				setBalanceTokens({
-					tokens: newTokenBalances,
+					tokens,
+					loading: false,
 				})
 			}
 			fetchBalances();
+			// call fetchBalances each minute
 			const intervalId = setInterval(fetchBalances, 60000);
 			return () => {
 				clearInterval(intervalId)
 			};
 		}
-	}, [addressWallet, allReservesTokensData.allReservesTokens.length])
-	
+	}, [addressWallet])
 	return tokensBalanceData
+}
+ 
+interface Token {
+	name: string
+	address: string
+	balance: BigNumber
+	supplyRate: BigNumber
+	variableBorrow: BigNumber
+	stableBorrow: BigNumber
+}
+
+interface TokenBalanceData {
+	tokens: Token[]
+	loading: boolean
 }
 
 export {   
     RPC_URL,
+	useBalances,
 	useProtocol,
 	useUserAccountData,
-	useAllReserversTokens,
-	useBalances, 
+	TokenBalanceData
 }
