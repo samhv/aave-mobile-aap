@@ -10,24 +10,19 @@ import {ProtocolTokensMarket} from "../organisms/ProtocolMarket";
 import {WalletConnectButton} from "../molecules/WalletConnectButton";
 import {GradientBackground} from "../atoms/GradientBackground";
 import { OnboardingDepositButton } from '../molecules/OnboardingDepositButton';
+import {StyleSheet} from "react-native";
 
 export const ProtocolScreen = () => {
-  return (
-      <TemplateScreen 
-        rightHeaderButton={<WalletConnectButton />}
-        header={<>
-            <ProtocolVolumen />
-            <StandardText>Aave TVL</StandardText>
-            </>}
-        body={<ProtocolTokensMarket />}
-        actions={
-            <>
-              <OnboardingDepositButton>
-                  
-              </OnboardingDepositButton>
-            </>
-        }
-      />
+  return ( 
+                    <GradientBackground >
+                       <View style={styles.container}>
+                            <AaveLogo/>
+                            <WalletConnectButton/>
+                        </View> 
+                        
+                    </GradientBackground>
+            
+            
   );
 };
 
@@ -65,3 +60,13 @@ export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, he
       </GradientBackground>
     );
 };
+
+const styles = StyleSheet.create ({
+    container: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+
+    }
+})

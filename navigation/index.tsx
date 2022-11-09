@@ -11,7 +11,7 @@ import {BorrowScreen} from "../components/screens/BorrowScreen";
 const Stack = createNativeStackNavigator();
 
 export const Navigation = () => {
-    const walletSetup = useSelector(walletSelectors.isWalletSetUp);
+    const walletSetup: boolean = useSelector(walletSelectors.isWalletSetUp);
 
     return <NavigationContainer>
         <Stack.Navigator>
