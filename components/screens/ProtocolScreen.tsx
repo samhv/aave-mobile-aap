@@ -16,8 +16,11 @@ export const ProtocolScreen = () => {
   return ( 
                     <GradientBackground >
                        <View style={styles.container}>
-                            <AaveLogo/>
-                            <WalletConnectButton/>
+                            <AaveLogo  />
+                            <View style={styles.buttom}>
+                                 <WalletConnectButton /> 
+                            </View>
+                            
                         </View> 
                         
                     </GradientBackground>
@@ -68,5 +71,14 @@ const styles = StyleSheet.create ({
         alignItems: "center",
         flex: 1,
 
+    },
+
+    buttom: {
+        marginTop: 50,
+        borderRadius: 10,
+        borderColor: "white",
+        borderWidth: 1,
+        borderStyle: "dotted",
     }
+
 })
