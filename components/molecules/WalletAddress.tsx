@@ -5,16 +5,25 @@ import {walletSelectors} from "../../redux-store/wallet";
 import { StyleSheet } from "react-native";
 import {STYLES} from "../../constants";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import { Share } from "react-native";
 
 export const WalletAddress = () => {
-    const { killSession } = useConnectWallet();
     const address = useSelector(walletSelectors.address);
-    return <Button style={styles.button} title={address} onPress={killSession} />;
+    const share = async () => {
+        try {
+            await Share.share({title: "your wallet", message:address })
+        } catch (error) {
+            alert ("your device is not support this feature")
+        }
+    }
+    return <Button style={styles.button} title={address} onPress={share} />;
 };
 
 const styles = StyleSheet.create({
     button: {
         backgroundColor: "rgba(0, 0, 0, 0.2)",
         height: STYLES.button.height,
+        borderStyle:"dotted",
+       
     }
 })
