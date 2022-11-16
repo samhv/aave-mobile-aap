@@ -11,7 +11,7 @@ export const WalletAddress = () => {
     const address = useSelector(walletSelectors.address);
     const share = async () => {
         try {
-            await Share.share({title: "your wallet", message:address })
+            await Share.share({message:address})
         } catch (error) {
             alert ("your device is not support this feature")
         }
