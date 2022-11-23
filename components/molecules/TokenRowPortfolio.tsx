@@ -13,6 +13,7 @@ interface TokenRowPortfolioInterface {
 }
 
 const TokenRowPortfolio: React.FC<TokenRowPortfolioInterface> = ({ address, name, apy, balance, TextComponent }) => {
+   
    return <View height={STYLES.tokenRow.height} width={"100%"} flexDirection={"row"} alignItems={"center"}>
            <TokenIcon address={address} size={40} />
            <View marginLeft={10}>

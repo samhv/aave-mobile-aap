@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         justifyContext: "center",
         alignItems: "center",
         flex: 1,
+        marginHorizontal: 20,
     },
     thanksText: {
         color:"white",

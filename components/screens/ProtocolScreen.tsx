@@ -10,6 +10,9 @@ import {ProtocolTokensMarket} from "../organisms/ProtocolMarket";
 import {WalletConnectButton} from "../molecules/WalletConnectButton";
 import {GradientBackground} from "../atoms/GradientBackground";
 import { OnboardingDepositButton } from '../molecules/OnboardingDepositButton';
+import { StyleSheet, Platform } from "react-native"
+
+
 
 export const ProtocolScreen = () => {
   return (
@@ -41,7 +44,7 @@ interface TemplateScreen {
 export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, header, body, actions }) => {
     return (
       <GradientBackground>
-            <ScrollView>
+            <ScrollView style={styles.container}>
                 <SafeAreaView>
                         <View marginTop={10} flexDirection="row" justifyContent="space-between" paddingHorizontal={STYLES.spacing.padding}>
                             <AaveLogo />
@@ -65,3 +68,9 @@ export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, he
       </GradientBackground>
     );
 };
+
+const styles = StyleSheet.create ({
+    container: {
+        marginTop: Platform.OS === 'ios' ? 0 : 17,
+    }
+})

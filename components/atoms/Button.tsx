@@ -15,7 +15,7 @@ interface ButtonProps {
 export const Button: React.FC<ButtonProps> = ({ style, textStyle, ...props }) => {
     return (
         <TouchableOpacity onPress={props.onPress} style={StyleSheet.flatten([styles.container, style])}>
-            <StandardText style={textStyle} numberOfLines={1} >{props.title}</StandardText>
+            <StandardText style={textStyle} numberOfLines={1} ellipsizeMode="middle" >{props.title}</StandardText>
         </TouchableOpacity>
     );
 };

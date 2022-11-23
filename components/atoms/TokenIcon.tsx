@@ -4,17 +4,21 @@ import { Image } from "./Image";
 import {aaveAddress} from "../../constants/tokens";
 import { dictionaryTokenIcon } from "../../constants/tokenIcon";
 import { CHAIN_IDS } from "../../constants/chains";
+import { useProtocol } from "../../constants/protocol";
 
-// in 
+
 interface TokenIconInterface {
     address: string // the address of the asset
     size: number // the size of the icon asset
     chainId: number
 }
 
-const TokenIcon: React.FC<TokenIconInterface> = ({ address, size, chainId }) => {
+const TokenIcon: React.FC<TokenIconInterface> = ({ address, size }) => {
     
-    const Logo = dictionaryTokenIcon[chainId][address];
+    const {connector} = useProtocol();
+    const chainId = connector.chainId;
+
+    const Logo = dictionaryTokenIcon[chainId]?.[address];
 
     if(!Logo) {
         return <View height={size}
@@ -22,8 +26,7 @@ const TokenIcon: React.FC<TokenIconInterface> = ({ address, size, chainId }) => 
                 borderRadius={size/2} 
                 backgroundColor={"#F9A606"} 
                 alignItems={"center"} 
-                justifyContent={"center"} >
-                </View>
+                justifyContent={"center"} />
     }
 
     return <View height={size}

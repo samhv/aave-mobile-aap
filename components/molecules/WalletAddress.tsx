@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0, 0, 0, 0.2)",
         height: STYLES.button.height,
         borderStyle:"dotted",
+        width: "100%",
        
     }
 })
