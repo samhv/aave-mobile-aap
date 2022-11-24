@@ -12,25 +12,20 @@ import {GradientBackground} from "../atoms/GradientBackground";
 import { OnboardingDepositButton } from '../molecules/OnboardingDepositButton';
 import { StyleSheet, Platform } from "react-native"
 
-
-
 export const ProtocolScreen = () => {
-  return (
-      <TemplateScreen 
-        rightHeaderButton={<WalletConnectButton />}
-        header={<>
-            <ProtocolVolumen />
-            <StandardText>Aave TVL</StandardText>
-            </>}
-        body={<ProtocolTokensMarket />}
-        actions={
-            <>
-              <OnboardingDepositButton>
-                  
-              </OnboardingDepositButton>
-            </>
-        }
-      />
+  return ( 
+                    <GradientBackground >
+                       <View style={styles.loggedOutContainer}>
+                            <AaveLogo  />
+                            <View style={styles.buttom}>
+                                 <WalletConnectButton /> 
+                            </View>
+                            
+                        </View> 
+                        
+                    </GradientBackground>
+            
+            
   );
 };
 
@@ -44,7 +39,7 @@ interface TemplateScreen {
 export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, header, body, actions }) => {
     return (
       <GradientBackground>
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.loggedInContainer}>
                 <SafeAreaView>
                         <View marginTop={10} flexDirection="row" justifyContent="space-between" paddingHorizontal={STYLES.spacing.padding}>
                             <AaveLogo />
@@ -70,7 +65,22 @@ export const TemplateScreen: React.FC<TemplateScreen> = ({ rightHeaderButton, he
 };
 
 const styles = StyleSheet.create ({
-    container: {
+    loggedInContainer: {
         marginTop: Platform.OS === 'ios' ? 0 : 17,
+    },
+    loggedOutContainer: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+
+    },
+    buttom: {
+        marginTop: 50,
+        borderRadius: 10,
+        borderColor: "white",
+        borderWidth: 1,
+        borderStyle: "dotted",
     }
+
 })
