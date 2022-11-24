@@ -63,10 +63,12 @@ const useUserAccountData = (): UserAccountData => {
 				const aaveContract = new ethers.Contract(aaveAddress, aaveAbi, provider);
 				const { totalCollateralBase, totalDebtBase, healthFactor } = await aaveContract.getUserAccountData(addressWallet);
 				const divided = Math.pow(10,8)
+				const healthFactorBN = new BigNumber(healthFactor._hex).div(Math.pow(10,18))
+				const healthFactorMax = BigNumber.minimum(healthFactorBN, 9.99);
 				setUserAccountData({
 					totalCollateralBase: new BigNumber(totalCollateralBase._hex).div(divided),
 					totalDebtBase: new BigNumber(totalDebtBase._hex).div(divided),
-					healthFactor: new BigNumber(healthFactor._hex).div(Math.pow(10,18)),
+					healthFactor: healthFactorMax
 				})
 				
 			}

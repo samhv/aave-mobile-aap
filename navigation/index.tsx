@@ -7,6 +7,8 @@ import { ProtocolScreen } from "../components/screens/ProtocolScreen";
 import { walletSelectors } from "../redux-store/wallet";
 import {DepositScreen} from "../components/screens/DepositScreen";
 import {BorrowScreen} from "../components/screens/BorrowScreen";
+import { MenuScreen } from "../components/screens/MenuScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,7 @@ export const Navigation = () => {
                             <Stack.Screen name="Portfolio" component={PortfolioScreen} />
                             <Stack.Screen name="Deposit" component={DepositScreen} />
                             <Stack.Screen name="Borrow" component={BorrowScreen} />
+                            <Stack.Screen name="Menu" component={MenuScreen} />
                         </Stack.Group>
                     </>
                     : <>

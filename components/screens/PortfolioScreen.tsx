@@ -7,10 +7,11 @@ import { PortfolioIndicator } from "../organisms/PortfolioIndicator";
 import { DepositButton } from "../atoms/DepositButton"
 import { BorrowButton } from "../atoms/BorrowButton";
 import {View} from "../atoms/View";
+import { MenuButton } from '../atoms/MenuButton';
 
 export const PortfolioScreen = () => {
   return <TemplateScreen
-        rightHeaderButton={<WalletAddress />}
+        rightHeaderButton={<MenuButton />}
         header={<>
             <UserBalance />
             </>}
