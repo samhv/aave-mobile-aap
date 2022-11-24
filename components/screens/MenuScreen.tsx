@@ -32,7 +32,7 @@ export const MenuScreen = ()  => {
     );
 }
 
-export const SignedoutButton = () => {
+export const SignedOutButton = () => {
     const navigation = useNavigation();
     const { killSession } = useConnectWallet()
     return <Button title={"Signed-Out"} onPress={killSession} />

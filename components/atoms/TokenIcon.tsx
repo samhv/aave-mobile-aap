@@ -10,7 +10,6 @@ import { useProtocol } from "../../constants/protocol";
 interface TokenIconInterface {
     address: string // the address of the asset
     size: number // the size of the icon asset
-    chainId: number
 }
 
 const TokenIcon: React.FC<TokenIconInterface> = ({ address, size }) => {
@@ -39,10 +38,6 @@ const TokenIcon: React.FC<TokenIconInterface> = ({ address, size }) => {
     </View>
                         
 }; 
-
-TokenIcon.defaultProps = {
-    chainId: CHAIN_IDS.POLYGON_TESTNET
-}
 
 export {
     TokenIcon
